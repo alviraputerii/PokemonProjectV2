@@ -1,7 +1,7 @@
 @PokemonFeature
-Feature: Compare Pokemon Data
+Feature: Feature - Compare Pokemon Data
 
-  Scenario Outline: Compare pokemon data from some pokemon website
+  Scenario Outline: Scenario - Compare pokemon data from some pokemon website
     Given open bulbapedia home page
     And   bulbapedia home page should be opened
     When  at bulbapedia home page search for '<pokemon>'
@@ -25,10 +25,11 @@ Feature: Compare Pokemon Data
     Then  api response code should be 200
     And   convert the response into model class
 
-    Then compare pokemon name from three websites
-    Then compare pokemon number from three websites
-    Then compare pokemon type from three websites
-    Then compare pokemon baseStats from three websites
+    Then compare following pokemon data from bulbapedia, pokemondb and pokeapi
+      | name      |
+      | number    |
+      | types     |
+      | baseStats |
 
     Examples:
       | pokemon   |

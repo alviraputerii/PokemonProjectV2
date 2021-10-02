@@ -12,13 +12,16 @@ import com.blibli.future.utils.Utility;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.qameta.allure.Allure;
 import io.restassured.response.Response;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.testng.asserts.SoftAssert;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class ComparePokemonSteps extends Utility {
@@ -85,6 +88,7 @@ public class ComparePokemonSteps extends Utility {
     //---------------------------- Get Data
     @Then("at bulbapedia pokemon page get following {string} data")
     public void atBulbapediaPokemonPageGetFollowingData(String pokemon, List<String> data) {
+        Allure.addAttachment("Page Screenshot",new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         for (String dt : data) {
             switch (dt) {
                 case "name":
@@ -108,6 +112,7 @@ public class ComparePokemonSteps extends Utility {
 
     @Then("at pokemondb pokemon page get following data")
     public void atPokemondbPokemonPageGetFollowingData(List<String> data) {
+        Allure.addAttachment("Page Screenshot",new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         for (String dt : data) {
             switch (dt) {
                 case "name":
@@ -137,34 +142,34 @@ public class ComparePokemonSteps extends Utility {
     }
 
     //---------------------------- Compare Data
-    @Then("compare pokemon name from three websites")
-    public void comparePokemonNameFromThreeWebsites() {
-        boolean checkName = bulbapediaPokemon.getName().equalsIgnoreCase(pokemonDbPokemon.getName()) &&
-                bulbapediaPokemon.getName().equalsIgnoreCase(getPokemonApiResponse.getName());
-        softAssert.assertTrue(checkName, "Pokemon name doesn't match");
-    }
 
-    @Then("compare pokemon number from three websites")
-    public void comparePokemonNumberFromThreeWebsites() {
-        boolean checkNumber = bulbapediaPokemon.getNumber() == pokemonDbPokemon.getNumber() &&
-                bulbapediaPokemon.getNumber() == getPokemonApiResponse.getId().intValue();
-        softAssert.assertTrue(checkNumber, "Pokemon number doesn't match");
-    }
-
-    @Then("compare pokemon type from three websites")
-    public void comparePokemonTypeFromThreeWebsites() {
-        List<String> pokeApiType = getPokemonApiResponse.getTypes().stream().map(ty -> ty.getType().getName()).collect(Collectors.toList());
-        boolean checkType = bulbapediaPokemon.getType().equals(pokemonDbPokemon.getType()) &&
-                bulbapediaPokemon.getType().equals(pokeApiType);
-        softAssert.assertTrue(checkType, "Pokemon type doesn't match");
-    }
-
-    @Then("compare pokemon baseStats from three websites")
-    public void comparePokemonBaseStatsFromThreeWebsites() {
-        List<Integer> pokeApiStats = getPokemonApiResponse.getStats().stream().map(st -> st.getBase_stat().intValue()).collect(Collectors.toList());
-        boolean checkStats = bulbapediaPokemon.getSpeciesStats().equals(pokemonDbPokemon.getSpeciesStats()) &&
-                bulbapediaPokemon.getSpeciesStats().equals(pokeApiStats);
-        softAssert.assertTrue(checkStats, "Pokemon base stat doesn't match");
+    @Then("compare following pokemon data from bulbapedia, pokemondb and pokeapi")
+    public void compareFollowingPokemonDataFromBulbapediaPokemondbAndPokeapi(List<String> data) {
+        for (String dt : data) {
+            switch (dt) {
+                case "name":
+                    boolean checkName = bulbapediaPokemon.getName().equalsIgnoreCase(pokemonDbPokemon.getName()) &&
+                            bulbapediaPokemon.getName().equalsIgnoreCase(getPokemonApiResponse.getName());
+                    softAssert.assertTrue(checkName, "Pokemon name doesn't match");
+                    break;
+                case "number":
+                    boolean checkNumber = bulbapediaPokemon.getNumber() == pokemonDbPokemon.getNumber() &&
+                            bulbapediaPokemon.getNumber() == getPokemonApiResponse.getId().intValue();
+                    softAssert.assertTrue(checkNumber, "Pokemon number doesn't match");
+                    break;
+                case "types":
+                    List<String> pokeApiType = getPokemonApiResponse.getTypes().stream().map(ty -> ty.getType().getName()).collect(Collectors.toList());
+                    boolean checkType = bulbapediaPokemon.getType().equals(pokemonDbPokemon.getType()) &&
+                            bulbapediaPokemon.getType().equals(pokeApiType);
+                    softAssert.assertTrue(checkType, "Pokemon type doesn't match");
+                    break;
+                default:
+                    List<Integer> pokeApiStats = getPokemonApiResponse.getStats().stream().map(st -> st.getBase_stat().intValue()).collect(Collectors.toList());
+                    boolean checkStats = bulbapediaPokemon.getSpeciesStats().equals(pokemonDbPokemon.getSpeciesStats()) &&
+                            bulbapediaPokemon.getSpeciesStats().equals(pokeApiStats);
+                    softAssert.assertTrue(checkStats, "Pokemon base stat doesn't match");
+            }
+        }
     }
 
     //---------------------------- Additional Steps
