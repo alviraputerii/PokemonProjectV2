@@ -1,6 +1,7 @@
 @PokemonFeature
 Feature: Feature - Compare Pokemon Data
 
+  @Website
   Scenario Outline: Scenario - Compare pokemon data from some pokemon website
     Given open bulbapedia home page
     And   bulbapedia home page should be opened
@@ -14,7 +15,6 @@ Feature: Feature - Compare Pokemon Data
     Given open pokemondb home page
     And   pokemondb home page should be opened
     When  at pokemondb home page search for '<pokemon>'
-    And   at pokemondb result page click pokemon pokedex
     Then  at pokemondb pokemon page get following data
       | name      |
       | number    |
@@ -32,10 +32,17 @@ Feature: Feature - Compare Pokemon Data
       | baseStats |
 
     Examples:
-      | pokemon   |
-      | pikachu   |
-#      | charizard |
+      | pokemon |
+      | pidgey  |
+      | ratata  |
 
+  @Mobile
+  Scenario Outline: Scenario - Compare pokemon data from mobile pokemon app
+    When  at app home page search for '<pokemon>'
+
+    Examples:
+      | pokemon |
+      | pikachu |
 
 
 

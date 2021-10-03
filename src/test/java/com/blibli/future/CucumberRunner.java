@@ -10,7 +10,7 @@ import org.testng.annotations.DataProvider;
                 "io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm",
                 "json:target/destination/cucumber.json"},
         glue = {"com.blibli.future.steps"},
-        tags = "@PokemonFeature")
+        tags = "@Mobile")
 
 public class CucumberRunner extends AbstractTestNGCucumberTests {
     @Override
