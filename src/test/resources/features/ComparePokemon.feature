@@ -34,7 +34,7 @@ Feature: Feature - Compare Pokemon Data
     Examples:
       | pokemon   |
       | pikachu   |
-#      | charizard |
+      | charizard |
 
 
 
