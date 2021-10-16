@@ -1,8 +1,14 @@
 package com.blibli.future.utils;
 
+import com.blibli.future.data.ParentJsonData;
+import com.blibli.future.data.PokemonData;
+import com.blibli.future.data.PokemonJsonData;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
+import io.cucumber.java.it.Ma;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.webdriver.ThucydidesWebDriverSupport;
@@ -10,17 +16,15 @@ import net.thucydides.core.webdriver.WebDriverFacade;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 @Slf4j
 public class Utility extends PageObject {
     private final Properties properties;
-    public static AndroidDriver ANDROID_DRIVER;
 
     public Utility() {
         BufferedReader reader;
@@ -131,4 +135,54 @@ public class Utility extends PageObject {
         return (AndroidDriver) ((WebDriverFacade) ThucydidesWebDriverSupport.getDriver()).getProxiedDriver();
     }
 
+    public void setPokemonData(String source, Map<String, Object> map) {
+        ParentJsonData.putParentData(source, map);
+    }
+
+    public static String objToJsonString(Object obj) {
+        ObjectMapper Obj = new ObjectMapper();
+        String jsonStr = "{}";
+        try {
+            jsonStr = Obj.writeValueAsString(obj);
+        } catch (IOException e) {
+            System.out.println("parseObjectToJson:" + e);
+        }
+        return jsonStr;
+    }
+
+    public void writeJsonFile(String fileName) {
+        String path = System.getProperty("user.dir") + "\\target\\jsonData\\" + fileName + ".json";
+        String data = objToJsonString(ParentJsonData.getParentData());
+        try {
+            File file = new File(path);
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.append(data);
+            fileWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        PokemonJsonData.clearPokemonData();
+        ParentJsonData.clearParentData();
+    }
+
+    public List<Map<String,Object>> readJsonFile(String fileName) {
+        String path = System.getProperty("user.dir") + "\\target\\jsonData\\" + fileName;
+        List<Map<String,Object>> jsonMap = new ArrayList<>();
+        try {
+            InputStream getJsonFile = new FileInputStream(path);
+            jsonMap = new ObjectMapper().readValue(getJsonFile, new TypeReference<List<Map<String, Object>>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return jsonMap;
+    }
+
+    public File[] getJsonFile(){
+        File folder = new File("target/jsonData");
+        return folder.listFiles();
+    }
+
+    public PokemonData convertClass(Object data){
+        return new ObjectMapper().convertValue(data, PokemonData.class);
+    }
 }

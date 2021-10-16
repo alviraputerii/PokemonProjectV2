@@ -3,10 +3,12 @@ package com.blibli.future.steps;
 import com.blibli.future.common.CommonAction;
 import com.blibli.future.constant.ParamConstant;
 import com.blibli.future.data.PokemonData;
+import com.blibli.future.data.PokemonJsonData;
 import com.blibli.future.pages.*;
 import com.blibli.future.response.GetPokemonApiResponse;
 import com.blibli.future.service.PokeApiController;
 import com.blibli.future.utils.Utility;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,6 +19,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.testng.asserts.SoftAssert;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,22 +105,19 @@ public class ComparePokemonSteps extends Utility {
             for (String dt : data) {
                 switch (dt) {
                     case "name":
-                        bulbapediaPokemon.setName(bulbapediaPokemonPage.getPokemonName());
-                        System.out.println(bulbapediaPokemon.getName());
+                        PokemonJsonData.putPokemonData(ParamConstant.name, bulbapediaPokemonPage.getPokemonName());
                         break;
                     case "number":
-                        bulbapediaPokemon.setNumber(bulbapediaPokemonPage.getPokemonNumber());
-                        System.out.println(bulbapediaPokemon.getNumber());
+                        PokemonJsonData.putPokemonData(ParamConstant.number, bulbapediaPokemonPage.getPokemonNumber());
                         break;
                     case "types":
-                        bulbapediaPokemon.setType(bulbapediaPokemonPage.getPokemonTypes());
-                        System.out.println(bulbapediaPokemon.getType());
+                        PokemonJsonData.putPokemonData(ParamConstant.type, bulbapediaPokemonPage.getPokemonTypes());
                         break;
                     default:
-                        bulbapediaPokemon.setSpeciesStats(bulbapediaPokemonPage.getPokemonStats(pokemon));
-                        System.out.println(bulbapediaPokemon.getSpeciesStats());
+                        PokemonJsonData.putPokemonData(ParamConstant.baseStats, bulbapediaPokemonPage.getPokemonStats(pokemon));
                 }
             }
+            setPokemonData(ParamConstant.bulbapediaData, PokemonJsonData.getPokemonData());
             isBulbapediaDataExist = true;
         } catch (Exception e) {
             isBulbapediaDataExist = false;
@@ -132,22 +133,20 @@ public class ComparePokemonSteps extends Utility {
             for (String dt : data) {
                 switch (dt) {
                     case "name":
-                        pokemonDbPokemon.setName(pokemonDbPokemonPage.getPokemonName());
-                        System.out.println(pokemonDbPokemon.getName());
+                        PokemonJsonData.putPokemonData(ParamConstant.name, pokemonDbPokemonPage.getPokemonName());
                         break;
                     case "number":
-                        pokemonDbPokemon.setNumber(pokemonDbPokemonPage.getPokemonNumber());
-                        System.out.println(pokemonDbPokemon.getNumber());
+                        PokemonJsonData.putPokemonData(ParamConstant.number, pokemonDbPokemonPage.getPokemonNumber());
                         break;
                     case "types":
-                        pokemonDbPokemon.setType(pokemonDbPokemonPage.getPokemonTypes());
-                        System.out.println(pokemonDbPokemon.getType());
+                        PokemonJsonData.putPokemonData(ParamConstant.type, pokemonDbPokemonPage.getPokemonTypes());
                         break;
                     default:
-                        pokemonDbPokemon.setSpeciesStats(pokemonDbPokemonPage.getPokemonStats());
-                        System.out.println(pokemonDbPokemon.getSpeciesStats());
+                        PokemonJsonData.putPokemonData(ParamConstant.baseStats, pokemonDbPokemonPage.getPokemonStats());
                 }
             }
+            setPokemonData(ParamConstant.pokemonDbData, PokemonJsonData.getPokemonData());
+            writeJsonFile(ParamConstant.webData);
         }
     }
 
@@ -158,17 +157,14 @@ public class ComparePokemonSteps extends Utility {
             for (String dt : data) {
                 switch (dt) {
                     case "name":
-                        pokeapiPokemon.setName(getPokemonApiResponse.getName());
-                        System.out.println(pokeapiPokemon.getName());
+                        PokemonJsonData.putPokemonData(ParamConstant.name, getPokemonApiResponse.getName());
                         break;
                     case "number":
-                        pokeapiPokemon.setNumber(getPokemonApiResponse.getId().intValue());
-                        System.out.println(pokeapiPokemon.getNumber());
+                        PokemonJsonData.putPokemonData(ParamConstant.number, getPokemonApiResponse.getId().intValue());
                         break;
                     case "types":
                         List<String> pokeApiType = getPokemonApiResponse.getTypes().stream().map(ty -> ty.getType().getName()).collect(Collectors.toList());
-                        pokeapiPokemon.setType(pokeApiType);
-                        System.out.println(pokeapiPokemon.getType());
+                        PokemonJsonData.putPokemonData(ParamConstant.type, pokeApiType);
                         break;
                     default:
                         List<Integer> pokeApiStats = getPokemonApiResponse.getStats().stream().map(st -> st.getBase_stat().intValue()).collect(Collectors.toList());
@@ -176,10 +172,11 @@ public class ComparePokemonSteps extends Utility {
                         for (int i = 0; i < ParamConstant.baseStatsName.size(); i++) {
                             pokemonStats.put(ParamConstant.baseStatsName.get(i), pokeApiStats.get(i));
                         }
-                        pokeapiPokemon.setSpeciesStats(pokemonStats);
-                        System.out.println(pokeapiPokemon.getSpeciesStats());
+                        PokemonJsonData.putPokemonData(ParamConstant.baseStats, pokemonStats);
                 }
             }
+            setPokemonData(ParamConstant.pokeapiData, PokemonJsonData.getPokemonData());
+            writeJsonFile(ParamConstant.apiData);
             isPokeApiDataExist = true;
         } catch (Exception e) {
             isPokeApiDataExist = false;
@@ -190,6 +187,23 @@ public class ComparePokemonSteps extends Utility {
     @Then("compare following pokemon data from bulbapedia, pokemondb and pokeapi")
     public void compareFollowingPokemonDataFromBulbapediaPokemondbAndPokeapi(List<String> data) {
         if (isBulbapediaDataExist && isPokemonDbDataExist && isPokeApiDataExist) {
+            File[] listOfFiles = getJsonFile();
+            List<Map<String, Object>> webData;
+            for (int i = 0; i < listOfFiles.length; i++) {
+                webData = readJsonFile(listOfFiles[i].getName());
+                for (int x = 0; x < webData.size(); x++) {
+                    if (webData.get(x).containsKey(ParamConstant.bulbapediaData))
+                        bulbapediaPokemon =
+                                convertClass(webData.get(x).values().stream().findFirst().get());
+                    else if (webData.get(x).containsKey(ParamConstant.pokemonDbData))
+                        pokemonDbPokemon =
+                                convertClass(webData.get(x).values().stream().findFirst().get());
+                    else
+                        pokeapiPokemon =
+                                convertClass(webData.get(x).values().stream().findFirst().get());
+                }
+            }
+
             for (String dt : data) {
                 switch (dt) {
                     case "name":
@@ -208,10 +222,8 @@ public class ComparePokemonSteps extends Utility {
                         softAssert.assertTrue(checkType, "Pokemon type doesn't match");
                         break;
                     default:
-//                        boolean checkStats = bulbapediaPokemon.getSpeciesStats().equals(pokemonDbPokemon.getSpeciesStats()) &&
-//                                bulbapediaPokemon.getSpeciesStats().equals(pokeapiPokemon.getSpeciesStats());
-                        boolean checkStats = bulbapediaPokemon.getSpeciesStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokemonDbPokemon.getSpeciesStats().get(e.getKey()))) &&
-                                bulbapediaPokemon.getSpeciesStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokeapiPokemon.getSpeciesStats().get(e.getKey())));
+                        boolean checkStats = bulbapediaPokemon.getBaseStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokemonDbPokemon.getBaseStats().get(e.getKey()))) &&
+                                bulbapediaPokemon.getBaseStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokeapiPokemon.getBaseStats().get(e.getKey())));
                         softAssert.assertTrue(checkStats, "Pokemon base stat doesn't match");
                 }
             }
@@ -220,7 +232,7 @@ public class ComparePokemonSteps extends Utility {
             softAssert.assertTrue(isPokemonDbDataExist, "Comparison failed because pokemon doesn't exist in PokemonDb");
             softAssert.assertTrue(isPokeApiDataExist, "Comparison failed because pokemon doesn't exist in PokeApi");
         }
-            softAssert.assertAll();
+        softAssert.assertAll();
     }
 
     //---------------------------- Mobile Step
@@ -242,8 +254,8 @@ public class ComparePokemonSteps extends Utility {
                     System.out.println(pokedexPokemon.getNumber());
                     break;
                 default:
-                    pokedexPokemon.setSpeciesStats(pokedexPokemonPage.getPokemonStats());
-                    System.out.println(pokedexPokemon.getSpeciesStats());
+                    pokedexPokemon.setBaseStats(pokedexPokemonPage.getPokemonStats());
+                    System.out.println(pokedexPokemon.getBaseStats());
             }
         }
     }

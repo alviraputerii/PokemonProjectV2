@@ -37,7 +37,7 @@ Feature: Feature - Compare Pokemon Data
 
     Examples:
       | pokemon |
-      | pidgey  |
+#      | pidgey  |
       | rattata  |
 
   @Mobile
