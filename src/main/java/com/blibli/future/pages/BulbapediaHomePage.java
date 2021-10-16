@@ -13,7 +13,7 @@ public class BulbapediaHomePage extends Utility {
         commonAction.openPage(getWebsiteUrl("urlBulbapedia"));
     }
 
-    public void inputKeyword(String keyword) {
+    public void searchPokemon(String keyword) {
         typeValueByXpath(searchInput, keyword);
     }
 }

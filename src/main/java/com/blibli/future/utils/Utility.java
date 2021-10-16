@@ -1,10 +1,8 @@
 package com.blibli.future.utils;
 
-import io.appium.java_client.PerformsTouchActions;
-import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.touch.WaitOptions;
-import io.appium.java_client.touch.offset.PointOption;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.webdriver.ThucydidesWebDriverSupport;
@@ -16,7 +14,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
@@ -71,6 +68,18 @@ public class Utility extends PageObject {
         }
     }
 
+    protected void clickByString(String string) {
+        By xpath = By.xpath(string);
+        WebElement webElement = waitForCondition().until(
+                ExpectedConditions.visibilityOfElementLocated(xpath));
+        try {
+            webElement.click();
+        } catch (Exception e) {
+            System.out.println("click normal failed");
+            clickByWebElement(webElement, getDriver());
+        }
+    }
+
     protected Boolean verifyUrlIsOpened(String url) {
         System.out.println("currentUrl: " + getDriver().getCurrentUrl());
         System.out.println("expected: " + url);
@@ -78,6 +87,13 @@ public class Utility extends PageObject {
     }
 
     protected String getTextByXpath(By xpath) {
+        WebElement webElement = waitForCondition().until(
+                ExpectedConditions.visibilityOfElementLocated(xpath));
+        return webElement.getText();
+    }
+
+    protected String getTextByString(String string) {
+        By xpath = By.xpath(string);
         WebElement webElement = waitForCondition().until(
                 ExpectedConditions.visibilityOfElementLocated(xpath));
         return webElement.getText();
@@ -91,7 +107,7 @@ public class Utility extends PageObject {
     protected Boolean isElementVisibleByXpath(By xpath) {
         WebElement webElement = waitForCondition().until(
                 ExpectedConditions.elementToBeClickable(xpath));
-        return webElement!=null;
+        return webElement != null;
     }
 
     protected void typeValueByXpath(By xpath, String value) {
@@ -101,17 +117,18 @@ public class Utility extends PageObject {
         webElement.sendKeys(Keys.ENTER);
     }
 
+    protected void typeValueWithoutEnterByXpath(By xpath, String value) {
+        WebElement webElement = waitForCondition().until(
+                ExpectedConditions.visibilityOfElementLocated(xpath));
+        webElement.sendKeys(value);
+    }
+
+    protected void sendKeyEnterMobile() {
+        getAndroidDriver().pressKey(new KeyEvent(AndroidKey.ENTER));
+    }
+
     public static AndroidDriver getAndroidDriver() {
         return (AndroidDriver) ((WebDriverFacade) ThucydidesWebDriverSupport.getDriver()).getProxiedDriver();
     }
 
-    public static void swipe(int startX, int startY, int endX, int endY, int duration) {
-        log.info("Swipe (" + startX + "," + startY + "," + endX + "," + endY + "," + duration + ")");
-        new TouchAction<>((PerformsTouchActions) ANDROID_DRIVER)
-                .press(new PointOption().withCoordinates(startX, startY))
-                .waitAction(new WaitOptions().withDuration(Duration.ofSeconds(duration)))
-                .moveTo(new PointOption().withCoordinates(endX, endY))
-                .release()
-                .perform();
-    }
 }
