@@ -1,6 +1,7 @@
 package com.blibli.future.steps;
 
 import com.blibli.future.common.CommonAction;
+import com.blibli.future.constant.ParamConstant;
 import com.blibli.future.data.PokemonData;
 import com.blibli.future.pages.*;
 import com.blibli.future.response.GetPokemonApiResponse;
@@ -16,10 +17,10 @@ import org.openqa.selenium.TakesScreenshot;
 import org.testng.asserts.SoftAssert;
 
 import java.io.ByteArrayInputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.hamcrest.Matchers.equalTo;
 
 public class ComparePokemonSteps extends Utility {
 
@@ -29,11 +30,14 @@ public class ComparePokemonSteps extends Utility {
     PokemonDbHomePage pokemonDbHomePage;
     PokemonDbPokemonPage pokemonDbPokemonPage;
     PokedexHomePage pokedexHomePage;
+    PokedexPokemonPage pokedexPokemonPage;
     GetPokemonApiResponse getPokemonApiResponse;
     Response response;
     boolean isBulbapediaDataExist, isPokemonDbDataExist, isPokeApiDataExist;
     PokemonData bulbapediaPokemon = new PokemonData();
     PokemonData pokemonDbPokemon = new PokemonData();
+    PokemonData pokeapiPokemon = new PokemonData();
+    PokemonData pokedexPokemon = new PokemonData();
     SoftAssert softAssert = new SoftAssert();
 
     //---------------------------- Open URL
@@ -64,19 +68,18 @@ public class ComparePokemonSteps extends Utility {
     //---------------------------- Search for Pokemon
     @When("at bulbapedia home page search for {string}")
     public void atBulbapediaHomePageSearchForPokemonPokemon(String pokemon) {
-        bulbapediaHomePage.inputKeyword(pokemon);
+        bulbapediaHomePage.searchPokemon(pokemon);
     }
 
     @When("at pokemondb home page search for {string}")
     public void atPokemondbHomePageSearchForPokemonPokemon(String pokemon) {
         try {
-            pokemonDbHomePage.inputKeyword(pokemon);
+            pokemonDbHomePage.searchPokemon(pokemon);
             pokemonDbHomePage.clickPokemonPokedex();
             isPokemonDbDataExist = true;
         } catch (Exception e) {
             isPokemonDbDataExist = false;
         }
-
     }
 
     @When("send api request for {string}")
@@ -88,7 +91,7 @@ public class ComparePokemonSteps extends Utility {
     //---------------------------- Check Response Code
     @Then("api response code should be {int}")
     public void apiResponseCodeShouldBe(int code) {
-        softAssert.assertEquals(response.getStatusCode(), equalTo(code), "Wrong response code");
+        softAssert.assertTrue(response.getStatusCode() == code, "Wrong response code");
     }
 
     //---------------------------- Get Data
@@ -148,10 +151,35 @@ public class ComparePokemonSteps extends Utility {
         }
     }
 
-    @Then("convert the response into model class")
-    public void convertTheResponseIntoModelClass() {
+    @Then("get following data from response")
+    public void getFollowingDataFromResponse(List<String> data) {
         try {
             getPokemonApiResponse = response.getBody().as(GetPokemonApiResponse.class);
+            for (String dt : data) {
+                switch (dt) {
+                    case "name":
+                        pokeapiPokemon.setName(getPokemonApiResponse.getName());
+                        System.out.println(pokeapiPokemon.getName());
+                        break;
+                    case "number":
+                        pokeapiPokemon.setNumber(getPokemonApiResponse.getId().intValue());
+                        System.out.println(pokeapiPokemon.getNumber());
+                        break;
+                    case "types":
+                        List<String> pokeApiType = getPokemonApiResponse.getTypes().stream().map(ty -> ty.getType().getName()).collect(Collectors.toList());
+                        pokeapiPokemon.setType(pokeApiType);
+                        System.out.println(pokeapiPokemon.getType());
+                        break;
+                    default:
+                        List<Integer> pokeApiStats = getPokemonApiResponse.getStats().stream().map(st -> st.getBase_stat().intValue()).collect(Collectors.toList());
+                        Map<String, Integer> pokemonStats = new HashMap<>();
+                        for (int i = 0; i < ParamConstant.baseStatsName.size(); i++) {
+                            pokemonStats.put(ParamConstant.baseStatsName.get(i), pokeApiStats.get(i));
+                        }
+                        pokeapiPokemon.setSpeciesStats(pokemonStats);
+                        System.out.println(pokeapiPokemon.getSpeciesStats());
+                }
+            }
             isPokeApiDataExist = true;
         } catch (Exception e) {
             isPokeApiDataExist = false;
@@ -166,24 +194,24 @@ public class ComparePokemonSteps extends Utility {
                 switch (dt) {
                     case "name":
                         boolean checkName = bulbapediaPokemon.getName().equalsIgnoreCase(pokemonDbPokemon.getName()) &&
-                                bulbapediaPokemon.getName().equalsIgnoreCase(getPokemonApiResponse.getName());
+                                bulbapediaPokemon.getName().equalsIgnoreCase(pokeapiPokemon.getName());
                         softAssert.assertTrue(checkName, "Pokemon name doesn't match");
                         break;
                     case "number":
                         boolean checkNumber = bulbapediaPokemon.getNumber() == pokemonDbPokemon.getNumber() &&
-                                bulbapediaPokemon.getNumber() == getPokemonApiResponse.getId().intValue();
+                                bulbapediaPokemon.getNumber() == pokeapiPokemon.getNumber();
                         softAssert.assertTrue(checkNumber, "Pokemon number doesn't match");
                         break;
                     case "types":
-                        List<String> pokeApiType = getPokemonApiResponse.getTypes().stream().map(ty -> ty.getType().getName()).collect(Collectors.toList());
                         boolean checkType = bulbapediaPokemon.getType().equals(pokemonDbPokemon.getType()) &&
-                                bulbapediaPokemon.getType().equals(pokeApiType);
+                                bulbapediaPokemon.getType().equals(pokeapiPokemon.getType());
                         softAssert.assertTrue(checkType, "Pokemon type doesn't match");
                         break;
                     default:
-                        List<Integer> pokeApiStats = getPokemonApiResponse.getStats().stream().map(st -> st.getBase_stat().intValue()).collect(Collectors.toList());
-                        boolean checkStats = bulbapediaPokemon.getSpeciesStats().equals(pokemonDbPokemon.getSpeciesStats()) &&
-                                bulbapediaPokemon.getSpeciesStats().equals(pokeApiStats);
+//                        boolean checkStats = bulbapediaPokemon.getSpeciesStats().equals(pokemonDbPokemon.getSpeciesStats()) &&
+//                                bulbapediaPokemon.getSpeciesStats().equals(pokeapiPokemon.getSpeciesStats());
+                        boolean checkStats = bulbapediaPokemon.getSpeciesStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokemonDbPokemon.getSpeciesStats().get(e.getKey()))) &&
+                                bulbapediaPokemon.getSpeciesStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokeapiPokemon.getSpeciesStats().get(e.getKey())));
                         softAssert.assertTrue(checkStats, "Pokemon base stat doesn't match");
                 }
             }
@@ -192,11 +220,32 @@ public class ComparePokemonSteps extends Utility {
             softAssert.assertTrue(isPokemonDbDataExist, "Comparison failed because pokemon doesn't exist in PokemonDb");
             softAssert.assertTrue(isPokeApiDataExist, "Comparison failed because pokemon doesn't exist in PokeApi");
         }
+            softAssert.assertAll();
     }
 
     //---------------------------- Mobile Step
-    @When("at app home page search for {string}")
+    @When("at pokedex app home page search for {string}")
     public void atAppHomePageSearchForPokemon(String value) {
-        pokedexHomePage.inputKeyword(value);
+        pokedexHomePage.searchPokemon(value);
     }
+
+    @Then("at pokedex app pokemon page get following data")
+    public void atPokedexAppPokemonPageGetFollowingData(List<String> data) {
+        for (String dt : data) {
+            switch (dt) {
+                case "name":
+                    pokedexPokemon.setName(pokedexPokemonPage.getPokemonName());
+                    System.out.println(pokedexPokemon.getName());
+                    break;
+                case "number":
+                    pokedexPokemon.setNumber(pokedexPokemonPage.getPokemonNumber());
+                    System.out.println(pokedexPokemon.getNumber());
+                    break;
+                default:
+                    pokedexPokemon.setSpeciesStats(pokedexPokemonPage.getPokemonStats());
+                    System.out.println(pokedexPokemon.getSpeciesStats());
+            }
+        }
+    }
+
 }

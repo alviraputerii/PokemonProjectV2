@@ -23,7 +23,11 @@ Feature: Feature - Compare Pokemon Data
 
     When  send api request for '<pokemon>'
     Then  api response code should be 200
-    And   convert the response into model class
+    Then  get following data from response
+      | name      |
+      | number    |
+      | types     |
+      | baseStats |
 
     Then compare following pokemon data from bulbapedia, pokemondb and pokeapi
       | name      |
@@ -34,15 +38,19 @@ Feature: Feature - Compare Pokemon Data
     Examples:
       | pokemon |
       | pidgey  |
-      | ratata  |
+      | rattata  |
 
   @Mobile
   Scenario Outline: Scenario - Compare pokemon data from mobile pokemon app
-    When  at app home page search for '<pokemon>'
+    When  at pokedex app home page search for '<pokemon>'
+    Then  at pokedex app pokemon page get following data
+      | name      |
+      | number    |
+      | baseStats |
 
     Examples:
       | pokemon |
-      | pikachu |
+      | Pikachu |
 
 
 

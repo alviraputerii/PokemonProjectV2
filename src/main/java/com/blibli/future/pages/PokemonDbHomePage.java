@@ -16,7 +16,7 @@ public class PokemonDbHomePage extends Utility {
         commonAction.openPage(getWebsiteUrl("urlPokemonDb"));
     }
 
-    public void inputKeyword(String keyword) {
+    public void searchPokemon(String keyword) {
         try {
             if (isElementVisibleByXpath(privacyControlOk)) clickByXpath(privacyControlOk);
         } catch (Exception ex) {
@@ -28,7 +28,6 @@ public class PokemonDbHomePage extends Utility {
     }
 
     public void clickPokemonPokedex() {
-
         WebElement dataClick = getDriver().findElement(pokemonResult);
         clickByWebElement(dataClick, getDriver());
     }
