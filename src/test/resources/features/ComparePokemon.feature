@@ -47,6 +47,7 @@ Feature: Feature - Compare Pokemon Data
       | name      |
       | number    |
       | baseStats |
+    And   testing print value
 
     Examples:
       | pokemon |
