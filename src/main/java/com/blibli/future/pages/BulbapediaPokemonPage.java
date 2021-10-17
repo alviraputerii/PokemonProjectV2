@@ -1,13 +1,9 @@
 package com.blibli.future.pages;
 
-import com.blibli.future.constant.ParamConstant;
 import com.blibli.future.utils.Utility;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BulbapediaPokemonPage extends Utility {
@@ -30,13 +26,10 @@ public class BulbapediaPokemonPage extends Utility {
         return getALlWebElementByXpath(pokemonType).stream().map(type -> type.getAttribute("textContent").toLowerCase()).collect(Collectors.toList());
     }
 
-    public Map<String, Integer> getPokemonStats(String poke) {
+    public List<Integer> getPokemonStats(String poke) {
         By pokemonStat = poke.equalsIgnoreCase("pikachu") ? pikachuBaseStat : pokemonBaseStat;
-        List<WebElement> stats = getALlWebElementByXpath(pokemonStat);
-        Map<String, Integer> pokemonStats = new HashMap<>();
-        for (int i = 0; i < ParamConstant.baseStatsName.size(); i++) {
-            pokemonStats.put(ParamConstant.baseStatsName.get(i), Integer.valueOf(stats.get(i).getAttribute("textContent")));
-        }
+        List<Integer> pokemonStats = getALlWebElementByXpath(pokemonStat).stream().map(stat -> Integer.valueOf(stat.getAttribute("textContent"))).collect(Collectors.toList());
+        pokemonStats.remove(pokemonStats.size() - 1);
         return pokemonStats;
     }
 }
