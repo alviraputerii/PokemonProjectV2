@@ -38,7 +38,8 @@ Feature: Feature - Compare Pokemon Data
     Examples:
       | pokemon |
 #      | pidgey  |
-      | rattata  |
+#      | rattata  |
+      | pikachu  |
 
   @Mobile
   Scenario Outline: Scenario - Compare pokemon data from mobile pokemon app

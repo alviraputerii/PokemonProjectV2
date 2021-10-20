@@ -198,6 +198,9 @@ public class ComparePokemonSteps extends Utility {
                     else if (pokemonData.get(x).containsKey(ParamConstant.pokemonDbData))
                         pokemonDbPokemon =
                                 convertClass(pokemonData.get(x).values().stream().findFirst().get());
+                    else if (pokemonData.get(x).containsKey(ParamConstant.pokedexAppData))
+                        pokedexPokemon =
+                                convertClass(pokemonData.get(x).values().stream().findFirst().get());
                     else
                         pokeapiPokemon =
                                 convertClass(pokemonData.get(x).values().stream().findFirst().get());
@@ -208,12 +211,14 @@ public class ComparePokemonSteps extends Utility {
                 switch (dt) {
                     case "name":
                         boolean checkName = bulbapediaPokemon.getName().equalsIgnoreCase(pokemonDbPokemon.getName()) &&
-                                bulbapediaPokemon.getName().equalsIgnoreCase(pokeapiPokemon.getName());
+                                bulbapediaPokemon.getName().equalsIgnoreCase(pokeapiPokemon.getName()) &&
+                                bulbapediaPokemon.getName().equalsIgnoreCase(pokedexPokemon.getName());
                         softAssert.assertTrue(checkName, "Pokemon name doesn't match");
                         break;
                     case "number":
                         boolean checkNumber = bulbapediaPokemon.getNumber() == pokemonDbPokemon.getNumber() &&
-                                bulbapediaPokemon.getNumber() == pokeapiPokemon.getNumber();
+                                bulbapediaPokemon.getNumber() == pokeapiPokemon.getNumber() &&
+                                bulbapediaPokemon.getNumber() == pokedexPokemon.getNumber();
                         softAssert.assertTrue(checkNumber, "Pokemon number doesn't match");
                         break;
                     case "types":
@@ -223,7 +228,8 @@ public class ComparePokemonSteps extends Utility {
                         break;
                     default:
                         boolean checkStats = bulbapediaPokemon.getBaseStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokemonDbPokemon.getBaseStats().get(e.getKey()))) &&
-                                bulbapediaPokemon.getBaseStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokeapiPokemon.getBaseStats().get(e.getKey())));
+                                bulbapediaPokemon.getBaseStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokeapiPokemon.getBaseStats().get(e.getKey()))) &&
+                                bulbapediaPokemon.getBaseStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokedexPokemon.getBaseStats().get(e.getKey())));
                         softAssert.assertTrue(checkStats, "Pokemon base stat doesn't match");
                 }
             }
