@@ -2,7 +2,7 @@
 Feature: Feature - Compare Pokemon Data
 
   @Website
-  Scenario Outline: Scenario - Compare pokemon data from some pokemon website
+  Scenario Outline: Scenario - Get pokemon data from some pokemon website
     Given open bulbapedia home page
     And   bulbapedia home page should be opened
     When  at bulbapedia home page search for '<pokemon>'
@@ -21,6 +21,15 @@ Feature: Feature - Compare Pokemon Data
       | types     |
       | baseStats |
 
+    Examples:
+      | pokemon   |
+      | pidgey    |
+      | rattata   |
+      | pikachu   |
+      | charizard |
+
+  @Api
+  Scenario Outline: Scenario - Get pokemon data from api
     When  send api request for '<pokemon>'
     Then  api response code should be 200
     Then  get following data from response
@@ -29,30 +38,37 @@ Feature: Feature - Compare Pokemon Data
       | types     |
       | baseStats |
 
-    Then compare following pokemon data from bulbapedia, pokemondb and pokeapi
-      | name      |
-      | number    |
-      | types     |
-      | baseStats |
-
     Examples:
-      | pokemon |
-#      | pidgey  |
-#      | rattata  |
-      | pikachu  |
+      | pokemon   |
+      | pidgey    |
+      | rattata   |
+      | pikachu   |
+      | charizard |
 
-  @Mobile
-  Scenario Outline: Scenario - Compare pokemon data from mobile pokemon app
-    When  at pokedex app home page search for '<pokemon>'
-    Then  at pokedex app pokemon page get following data
-      | name      |
-      | number    |
-      | baseStats |
-    And   testing print value
+#  @Mobile
+#  Scenario Outline: Scenario - Compare pokemon data from mobile pokemon app
+#    When  at pokedex app home page search for '<pokemon>'
+#    Then  at pokedex app pokemon page get following data
+#      | name      |
+#      | number    |
+#      | baseStats |
+#
+#    Examples:
+#      | pokemon |
+#      | Pidgey  |
+#      | Rattata |
+#      | Pikachu |
 
-    Examples:
-      | pokemon |
-      | Pikachu |
+  @Compare
+  Scenario: Scenario - Compare pokemon data
+    Given prepare pokemon parameter for following pokemon
+      | pidgey    |
+      | rattata   |
+      | pikachu   |
+      | charizard |
+    When  save pokemon data to json
+#    Then  compare all pokemon data
+
 
 
 

@@ -7,11 +7,10 @@ import java.util.Map;
 
 public class ParentJsonData {
     private static List<Map<String, Object>> listData = new ArrayList<>();
-    private static PokemonJsonData pokemonJsonData = new PokemonJsonData();
 
-    public static void putParentData(String key, Map<String, Object> value) {
+    public static void putParentData(Map<String, Object> value) {
         Map<String, Object> mapData = new HashMap<>();
-        mapData.put(key, value);
+        mapData.putAll(value);
         listData.add(mapData);
     }
 

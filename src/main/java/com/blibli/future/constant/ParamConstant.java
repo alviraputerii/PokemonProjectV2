@@ -13,7 +13,4 @@ public class ParamConstant {
     public final static String pokemonDbData = "pokemonDbData";
     public final static String pokeApiData = "pokeApiData";
     public final static String pokedexAppData = "pokedexAppData";
-    public final static String webData = "webData";
-    public final static String apiData = "apiData";
-    public final static String appData = "appData";
 }

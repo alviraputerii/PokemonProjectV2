@@ -5,7 +5,6 @@ import java.util.Map;
 
 public class PokemonJsonData {
     private static Map<String, Object> pokemonData = new HashMap<>();
-    private static PokemonData data = new PokemonData();
 
     public static void putPokemonData(String key, Object value){
         pokemonData.put(key, value);

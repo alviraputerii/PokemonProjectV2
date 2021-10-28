@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="PokemonTest" parallel="methods">
-    <test name="ChromeTest">
+<suite name="PokemonTest">
+    <test name="ComparePokemonDataTest" >
         <classes>
-            <class name="com.blibli.future.CucumberRunner">
-            </class>
+            <class name="com.blibli.future.CucumberRunner"/>
         </classes>
     </test>
 </suite>
