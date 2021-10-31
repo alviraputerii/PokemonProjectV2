@@ -166,6 +166,7 @@ public class Utility extends PageObject {
             System.out.println("file read2");
         } catch (IOException e) {
             jsonMap = new ArrayList<>();
+            e.printStackTrace();
         }
         return jsonMap;
     }
