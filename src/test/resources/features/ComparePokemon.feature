@@ -45,19 +45,19 @@ Feature: Feature - Compare Pokemon Data
       | pikachu   |
       | charizard |
 
-#  @Mobile
-#  Scenario Outline: Scenario - Compare pokemon data from mobile pokemon app
-#    When  at pokedex app home page search for '<pokemon>'
-#    Then  at pokedex app pokemon page get following data
-#      | name      |
-#      | number    |
-#      | baseStats |
-#
-#    Examples:
-#      | pokemon |
-#      | Pidgey  |
-#      | Rattata |
-#      | Pikachu |
+  @Mobile
+  Scenario Outline: Scenario - Compare pokemon data from mobile pokemon app
+    When  at pokedex app home page search for '<pokemon>'
+    Then  at pokedex app pokemon page get following data
+      | name      |
+      | number    |
+      | baseStats |
+
+    Examples:
+      | pokemon |
+      | Pidgey  |
+      | Rattata |
+      | Pikachu |
 
   @Compare
   Scenario: Scenario - Compare pokemon data
@@ -67,7 +67,7 @@ Feature: Feature - Compare Pokemon Data
       | pikachu   |
       | charizard |
     When  save pokemon data to json
-#    Then  compare all pokemon data
+    Then  compare all pokemon data
 
 
 

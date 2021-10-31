@@ -18,9 +18,6 @@ import org.testng.asserts.SoftAssert;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -224,24 +221,28 @@ public class ComparePokemonSteps extends Utility {
         }
         System.out.println("test :)");
 
-//        String[] sources = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData, ParamConstant.pokedexAppData};
-//        String[] sources = {ParamConstant.pokedexAppData};
-        String[] sources = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData};
+        String[] sources = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData, ParamConstant.pokedexAppData};
         List<PokemonData> currData;
         for (String source : sources) {
-            if (source.equals(ParamConstant.bulbapediaData))
-                currData = BulbapediaListData.getParentListData();
-            else if (source.equals(ParamConstant.pokemonDbData))
-                currData = PokemonDbListData.getParentListData();
-            else if (source.equals(ParamConstant.pokeApiData))
-                currData = PokeApiListData.getParentListData();
-            else
-                currData = PokedexListData.getParentListData();
-            for (int i = 0; i < currData.size(); i++) {
-                PokemonJsonData.putPokemonData(ParamConstant.name, currData.get(i).getName());
-                PokemonJsonData.putPokemonData(ParamConstant.number, currData.get(i).getNumber());
-                PokemonJsonData.putPokemonData(ParamConstant.type, currData.get(i).getType());
-                PokemonJsonData.putPokemonData(ParamConstant.baseStats, currData.get(i).getBaseStats());
+            switch (source) {
+                case ParamConstant.bulbapediaData:
+                    currData = BulbapediaListData.getParentListData();
+                    break;
+                case ParamConstant.pokemonDbData:
+                    currData = PokemonDbListData.getParentListData();
+                    break;
+                case ParamConstant.pokeApiData:
+                    currData = PokeApiListData.getParentListData();
+                    break;
+                default:
+                    currData = PokedexListData.getParentListData();
+                    break;
+            }
+            for (PokemonData dt : currData) {
+                PokemonJsonData.putPokemonData(ParamConstant.name, dt.getName());
+                PokemonJsonData.putPokemonData(ParamConstant.number, dt.getNumber());
+                PokemonJsonData.putPokemonData(ParamConstant.type, dt.getType());
+                PokemonJsonData.putPokemonData(ParamConstant.baseStats, dt.getBaseStats());
                 setPokemonData(PokemonJsonData.getPokemonData());
             }
             writeJsonFile(source);
@@ -253,21 +254,21 @@ public class ComparePokemonSteps extends Utility {
         File[] listOfFiles = getJsonFile();
         List<Map<String, Object>> pokemonData;
 
-        for (String dt : pokemons) {
-            for (int i = 0; i < listOfFiles.length; i++) {
-                String fileName = listOfFiles[i].getName();
+        for (String pokemon : pokemons) {
+            for (File listOfFile : listOfFiles) {
+                String fileName = listOfFile.getName();
                 pokemonData = readJsonFile(fileName);
-                for (int x = 0; x < pokemonData.size(); x++) {
+                for (Map<String, Object> pokemonDatum : pokemonData) {
                     try {
-                        if (pokemonData.get(x).containsValue(dt)) {
+                        if (pokemonDatum.containsValue(pokemon)) {
                             if (fileName.contains(ParamConstant.bulbapediaData))
-                                bulbapediaPokemon = convertClass(pokemonData.get(x));
+                                bulbapediaPokemon = convertClass(pokemonDatum);
                             else if (fileName.contains(ParamConstant.pokemonDbData))
-                                pokemonDbPokemon = convertClass(pokemonData.get(x));
+                                pokemonDbPokemon = convertClass(pokemonDatum);
                             else if (fileName.contains(ParamConstant.pokeApiData))
-                                pokeapiPokemon = convertClass(pokemonData.get(x));
+                                pokeapiPokemon = convertClass(pokemonDatum);
                             else
-                                pokedexPokemon = convertClass(pokemonData.get(x));
+                                pokedexPokemon = convertClass(pokemonDatum);
                         }
                     } catch (Exception e) {
                         if (fileName.contains(ParamConstant.bulbapediaData))

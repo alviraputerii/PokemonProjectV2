@@ -1,12 +1,10 @@
 package com.blibli.future;
 
 import com.blibli.future.constant.ParamConstant;
-import com.blibli.future.data.PokemonParameter;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 import org.apache.commons.io.FileUtils;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 
 import java.io.File;
@@ -20,7 +18,7 @@ import java.io.IOException;
 
 public class CucumberRunner extends AbstractTestNGCucumberTests {
     @Override
-    @DataProvider(parallel = true)
+    @DataProvider(parallel = false)
     public Object[][] scenarios() {
         return super.scenarios();
     }
@@ -37,17 +35,15 @@ public class CucumberRunner extends AbstractTestNGCucumberTests {
 //        return pokemon;
 //    }
 
-    @BeforeMethod
+//    @BeforeMethod
 //    @Factory(dataProvider="data-provider")
-    public void createInstances() {
-        PokemonParameter.setParameter("Pikachu");
-    }
+//    public void createInstances() {
+//        PokemonParameter.setParameter("Pikachu");
+//    }
 
     @BeforeClass
     public void createJsonFile() throws IOException {
-//        String[] files = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData,  ParamConstant.pokedexAppData};
-//        String[] files = {ParamConstant.pokedexAppData};
-        String[] files = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData};
+        String[] files = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData, ParamConstant.pokedexAppData};
         for (String fileName : files) {
             String path = System.getProperty("user.dir") + "\\target\\jsonData\\" + fileName + ".json";
             File file = new File(path);
