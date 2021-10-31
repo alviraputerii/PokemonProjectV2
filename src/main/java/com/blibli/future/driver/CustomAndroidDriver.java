@@ -15,9 +15,6 @@ public class CustomAndroidDriver implements DriverSource {
         dc.setCapability("platformName", "Android");
         dc.setCapability("platformVersion", "11");
         dc.setCapability("automationName", "UiAutomator2");
-//        dc.setCapability("appPackage", "dev.ronnie.pokeapiandroidtask");
-//        dc.setCapability("appActivity", "dev.ronnie.pokeapiandroidtask.MainActivity");
-        dc.setCapability("noReset", true);
         dc.setCapability("unicodeKeyboard", "true");
         dc.setCapability("resetKeyboard", "true");
 
