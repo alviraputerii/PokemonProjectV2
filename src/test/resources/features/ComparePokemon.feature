@@ -26,7 +26,6 @@ Feature: Feature - Compare Pokemon Data
       | pidgey    |
       | rattata   |
       | pikachu   |
-      | charizard |
 
   @Api
   Scenario Outline: Scenario - Get pokemon data from api
@@ -43,7 +42,6 @@ Feature: Feature - Compare Pokemon Data
       | pidgey    |
       | rattata   |
       | pikachu   |
-      | charizard |
 
   @Mobile
   Scenario Outline: Scenario - Compare pokemon data from mobile pokemon app
@@ -65,7 +63,6 @@ Feature: Feature - Compare Pokemon Data
       | pidgey    |
       | rattata   |
       | pikachu   |
-      | charizard |
     When  save pokemon data to json
     Then  compare all pokemon data
 

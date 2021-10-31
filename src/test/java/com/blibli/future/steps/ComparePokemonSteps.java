@@ -214,14 +214,14 @@ public class ComparePokemonSteps extends Utility {
 
     @When("save pokemon data to json")
     public void saveData() throws InterruptedException {
-        boolean complete = false;
-        while (!complete) {
-            Thread.sleep(2000);
-            System.out.println("test :(");
-            if (PokemonDbListData.getParentListData().size() == pokemons.size())
-                complete = true;
-        }
-        System.out.println("test :)");
+//        boolean complete = false;
+//        while (!complete) {
+//            Thread.sleep(2000);
+//            System.out.println("test :(");
+//            if (PokemonDbListData.getParentListData().size() == pokemons.size())
+//                complete = true;
+//        }
+//        System.out.println("test :)");
 
         String[] sources = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData, ParamConstant.pokedexAppData};
         List<PokemonData> currData;
