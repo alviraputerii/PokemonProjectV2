@@ -223,12 +223,14 @@ public class ComparePokemonSteps extends Utility {
                 String fileName = listOfFile.getName();
                 System.out.println("file name : " + fileName);
                 pokemonData = readJsonFile(fileName);
-                System.out.println("file content : " + pokemon);
+                System.out.println("file content : " + pokemonData);
                 for (Map<String, Object> data : pokemonData) {
                     try {
                         if (data.containsValue(pokemon)) {
-                            if (fileName.contains(ParamConstant.bulbapediaData))
+                            if (fileName.contains(ParamConstant.bulbapediaData)) {
                                 bulbapediaPokemon = convertClass(data);
+                                System.out.println(bulbapediaPokemon.getName());
+                            }
                             else if (fileName.contains(ParamConstant.pokemonDbData))
                                 pokemonDbPokemon = convertClass(data);
                             else if (fileName.contains(ParamConstant.pokeApiData))
