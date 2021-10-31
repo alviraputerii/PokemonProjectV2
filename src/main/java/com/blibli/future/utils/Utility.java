@@ -1,6 +1,7 @@
 package com.blibli.future.utils;
 
 import com.blibli.future.data.PokemonData;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.appium.java_client.android.AndroidDriver;
@@ -159,9 +160,11 @@ public class Utility extends PageObject {
         String path = System.getProperty("user.dir") + "\\target\\jsonData\\" + fileName;
         List<Map<String, Object>> jsonMap;
         try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
             InputStream getJsonFile = new FileInputStream(path);
             System.out.println("file read");
-            jsonMap = new ObjectMapper().readValue(getJsonFile, new TypeReference<List<Map<String, Object>>>() {
+            jsonMap = objectMapper.readValue(getJsonFile, new TypeReference<List<Map<String, Object>>>() {
             });
             System.out.println("file read2");
         } catch (IOException e) {
