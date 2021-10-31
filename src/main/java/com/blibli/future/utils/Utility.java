@@ -1,8 +1,6 @@
 package com.blibli.future.utils;
 
-import com.blibli.future.data.ParentJsonData;
 import com.blibli.future.data.PokemonData;
-import com.blibli.future.data.PokemonJsonData;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.appium.java_client.android.AndroidDriver;
@@ -15,10 +13,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class Utility extends PageObject {
     private final Properties properties;
@@ -132,10 +127,6 @@ public class Utility extends PageObject {
         return (AndroidDriver) ((WebDriverFacade) ThucydidesWebDriverSupport.getDriver()).getProxiedDriver();
     }
 
-    public void setPokemonData(Map<String, Object> map) {
-        ParentJsonData.putParentData(map);
-    }
-
     public static String objToJsonString(Object obj) {
         ObjectMapper Obj = new ObjectMapper();
         String jsonStr = "{}";
@@ -147,23 +138,24 @@ public class Utility extends PageObject {
         return jsonStr;
     }
 
-    public void writeJsonFile(String fileName) {
+    public void writeJsonFile(String fileName, Map<String, Object> map){
         String path = System.getProperty("user.dir") + "\\target\\jsonData\\" + fileName + ".json";
-        String data = objToJsonString(ParentJsonData.getParentData());
+        List<Map<String, Object>> currData = readJsonFile(fileName + ".json");
+        Map<String, Object> mapData = new HashMap<>();
+        mapData.putAll(map);
+        currData.add(mapData);
+        String data = objToJsonString(currData);
         System.out.println(data);
         try {
-            FileWriter writer = new FileWriter(path, true);
+            FileWriter writer = new FileWriter(path);
             writer.write(data);
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            PokemonJsonData.clearPokemonData();
-            ParentJsonData.clearParentData();
         }
     }
 
-    public List<Map<String, Object>> readJsonFile(String fileName) {
+    public List<Map<String,Object>> readJsonFile(String fileName) {
         String path = System.getProperty("user.dir") + "\\target\\jsonData\\" + fileName;
         List<Map<String, Object>> jsonMap;
         try {

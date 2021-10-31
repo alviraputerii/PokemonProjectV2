@@ -63,7 +63,6 @@ Feature: Feature - Compare Pokemon Data
       | pidgey    |
       | rattata   |
       | pikachu   |
-    When  save pokemon data to json
     Then  compare all pokemon data
 
 
