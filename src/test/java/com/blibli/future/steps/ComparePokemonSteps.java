@@ -202,6 +202,7 @@ public class ComparePokemonSteps extends Utility {
                     PokedexListData.putParentListData(ParamConstant.baseStats, pokedexPokemonPage.getPokemonStats(), Thread.currentThread().getId());
             }
         }
+        Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
     }
 
     //---------------------------- Compare Data
