@@ -160,8 +160,10 @@ public class Utility extends PageObject {
         List<Map<String, Object>> jsonMap;
         try {
             InputStream getJsonFile = new FileInputStream(path);
+            System.out.println("file read");
             jsonMap = new ObjectMapper().readValue(getJsonFile, new TypeReference<List<Map<String, Object>>>() {
             });
+            System.out.println("file read2");
         } catch (IOException e) {
             jsonMap = new ArrayList<>();
         }
