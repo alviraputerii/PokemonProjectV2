@@ -35,13 +35,13 @@ public class CucumberRunner extends AbstractTestNGCucumberTests {
 //        PokemonParameter.setParameter("Pikachu");
 //    }
 
-    @BeforeClass
-    public void createJsonFile() throws IOException {
-        String[] files = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData, ParamConstant.pokedexAppData};
-        for (String fileName : files) {
-            String path = System.getProperty("user.dir") + "\\target\\jsonData\\" + fileName + ".json";
-            File file = new File(path);
-            FileUtils.writeStringToFile(file, "", "UTF-8");
-        }
-    }
+//    @BeforeClass
+//    public void createJsonFile() throws IOException {
+//        String[] files = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData, ParamConstant.pokedexAppData};
+//        for (String fileName : files) {
+//            String path = System.getProperty("user.dir") + "\\target\\jsonData\\" + fileName + ".json";
+//            File file = new File(path);
+//            FileUtils.writeStringToFile(file, "", "UTF-8");
+//        }
+//    }
 }
