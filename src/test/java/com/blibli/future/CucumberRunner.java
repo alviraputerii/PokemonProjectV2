@@ -5,7 +5,6 @@ import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 import org.apache.commons.io.FileUtils;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,15 +13,10 @@ import java.io.IOException;
         plugin = {"pretty", "html:target/cucumber-html-reports",
                 "io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm",
                 "json:target/destination/cucumber.json"},
-        glue = {"com.blibli.future.steps"})
+        glue = {"com.blibli.future.steps"},
+        tags = "")
 
 public class CucumberRunner extends AbstractTestNGCucumberTests {
-    @Override
-    @DataProvider(parallel = false)
-    public Object[][] scenarios() {
-        return super.scenarios();
-    }
-
 //    public Utility utility = new Utility();
 
 //    @DataProvider(name = "data-provider")

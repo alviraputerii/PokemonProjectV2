@@ -203,6 +203,7 @@ public class ComparePokemonSteps extends Utility {
             }
         }
         Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
+        getAndroidDriver().resetApp();
     }
 
     //---------------------------- Compare Data
