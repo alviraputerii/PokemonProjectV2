@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-@Builder
 public class PokemonData {
     private String name;
     private int number;

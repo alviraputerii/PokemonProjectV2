@@ -36,7 +36,7 @@ public class ComparePokemonSteps extends Utility {
     GetPokemonApiResponse getPokemonApiResponse;
     Response response;
     boolean isPokemonDbDataExist;
-    PokemonData bulbapediaPokemon,pokemonDbPokemon,pokeapiPokemon,pokedexPokemon;
+    PokemonData bulbapediaPokemon, pokemonDbPokemon, pokeapiPokemon, pokedexPokemon;
     SoftAssert softAssert = new SoftAssert();
     List<String> pokemons = new ArrayList<>();
 
@@ -102,32 +102,23 @@ public class ComparePokemonSteps extends Utility {
     //---------------------------- Get Data
     @Then("at bulbapedia pokemon page get following {string} data")
     public void atBulbapediaPokemonPageGetFollowingData(String pokemon, List<String> data) {
-        String name = "";
-        int number = 0;
-        List<String> types = new ArrayList<>();
-        Map<String, Integer> baseStats = new HashMap<>();
+        bulbapediaPokemon = new PokemonData();
         try {
             for (String dt : data) {
                 switch (dt) {
                     case "name":
-                        name = bulbapediaPokemonPage.getPokemonName();
+                        bulbapediaPokemon.setName(bulbapediaPokemonPage.getPokemonName());
                         break;
                     case "number":
-                        number = bulbapediaPokemonPage.getPokemonNumber();
+                        bulbapediaPokemon.setNumber(bulbapediaPokemonPage.getPokemonNumber());
                         break;
                     case "types":
-                        types.addAll(bulbapediaPokemonPage.getPokemonTypes());
+                        bulbapediaPokemon.setType(bulbapediaPokemonPage.getPokemonTypes());
                         break;
                     default:
-                        baseStats.putAll(bulbapediaPokemonPage.getPokemonStats(pokemon));
+                        bulbapediaPokemon.setBaseStats(bulbapediaPokemonPage.getPokemonStats(pokemon));
                 }
             }
-            bulbapediaPokemon = PokemonData.builder()
-                    .name(name)
-                    .number(number)
-                    .type(types)
-                    .baseStats(baseStats)
-                    .build();
             PokemonListData.putParentListData(bulbapediaPokemon, ParamConstant.bulbapediaData);
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,32 +131,22 @@ public class ComparePokemonSteps extends Utility {
     public void atPokemondbPokemonPageGetFollowingData(List<String> data) {
         Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         if (isPokemonDbDataExist) {
-            String name = "";
-            int number = 0;
-            List<String> types = new ArrayList<>();
-            Map<String, Integer> baseStats = new HashMap<>();
-
+            pokemonDbPokemon = new PokemonData();
             for (String dt : data) {
                 switch (dt) {
                     case "name":
-                        name = pokemonDbPokemonPage.getPokemonName();
+                        pokemonDbPokemon.setName(pokemonDbPokemonPage.getPokemonName());
                         break;
                     case "number":
-                        number = pokemonDbPokemonPage.getPokemonNumber();
+                        pokemonDbPokemon.setNumber(pokemonDbPokemonPage.getPokemonNumber());
                         break;
                     case "types":
-                        types.addAll(pokemonDbPokemonPage.getPokemonTypes());
+                        pokemonDbPokemon.setType(pokemonDbPokemonPage.getPokemonTypes());
                         break;
                     default:
-                        baseStats.putAll(pokemonDbPokemonPage.getPokemonStats());
+                        pokemonDbPokemon.setBaseStats(pokemonDbPokemonPage.getPokemonStats());
                 }
             }
-            pokemonDbPokemon = PokemonData.builder()
-                    .name(name)
-                    .number(number)
-                    .type(types)
-                    .baseStats(baseStats)
-                    .build();
             PokemonListData.putParentListData(pokemonDbPokemon, ParamConstant.pokemonDbData);
         }
     }
@@ -174,22 +155,18 @@ public class ComparePokemonSteps extends Utility {
     public void getFollowingDataFromResponse(List<String> data) {
         try {
             getPokemonApiResponse = response.getBody().as(GetPokemonApiResponse.class);
-            String name = "";
-            int number = 0;
-            List<String> types = new ArrayList<>();
-            Map<String, Integer> baseStats = new HashMap<>();
-
+            pokeapiPokemon = new PokemonData();
             for (String dt : data) {
                 switch (dt) {
                     case "name":
-                        name = getPokemonApiResponse.getName();
+                        pokeapiPokemon.setName(getPokemonApiResponse.getName());
                         break;
                     case "number":
-                        number = getPokemonApiResponse.getId().intValue();
+                        pokeapiPokemon.setNumber(getPokemonApiResponse.getId().intValue());
                         break;
                     case "types":
                         List<String> pokeApiType = getPokemonApiResponse.getTypes().stream().map(ty -> ty.getType().getName()).collect(Collectors.toList());
-                        types.addAll(pokeApiType);
+                        pokeapiPokemon.setType(pokeApiType);
                         break;
                     default:
                         List<Integer> pokeApiStats = getPokemonApiResponse.getStats().stream().map(st -> st.getBase_stat().intValue()).collect(Collectors.toList());
@@ -197,15 +174,9 @@ public class ComparePokemonSteps extends Utility {
                         for (int i = 0; i < ParamConstant.baseStatsName.size(); i++) {
                             pokemonStats.put(ParamConstant.baseStatsName.get(i), pokeApiStats.get(i));
                         }
-                        baseStats.putAll(pokemonStats);
+                        pokeapiPokemon.setBaseStats(pokemonStats);
                 }
             }
-            pokeapiPokemon = PokemonData.builder()
-                    .name(name)
-                    .number(number)
-                    .type(types)
-                    .baseStats(baseStats)
-                    .build();
             PokemonListData.putParentListData(pokeapiPokemon, ParamConstant.pokeApiData);
         } catch (Exception e) {
             e.printStackTrace();
@@ -214,29 +185,19 @@ public class ComparePokemonSteps extends Utility {
 
     @Then("at pokedex app pokemon page get following data")
     public void atPokedexAppPokemonPageGetFollowingData(List<String> data) {
-        String name = "";
-        int number = 0;
-        List<String> types = new ArrayList<>();
-        Map<String, Integer> baseStats = new HashMap<>();
-
+        pokedexPokemon = new PokemonData();
         for (String dt : data) {
             switch (dt) {
                 case "name":
-                    name = pokedexPokemonPage.getPokemonName();
+                    pokedexPokemon.setName(pokedexPokemonPage.getPokemonName());
                     break;
                 case "number":
-                    number = pokedexPokemonPage.getPokemonNumber();
+                    pokedexPokemon.setNumber(pokedexPokemonPage.getPokemonNumber());
                     break;
                 default:
-                    baseStats.putAll(pokedexPokemonPage.getPokemonStats());
+                    pokedexPokemon.setBaseStats(pokedexPokemonPage.getPokemonStats());
             }
         }
-        pokedexPokemon = PokemonData.builder()
-                .name(name)
-                .number(number)
-                .type(types)
-                .baseStats(baseStats)
-                .build();
         PokemonListData.putParentListData(pokedexPokemon, ParamConstant.pokedexAppData);
         Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         getAndroidDriver().resetApp();
