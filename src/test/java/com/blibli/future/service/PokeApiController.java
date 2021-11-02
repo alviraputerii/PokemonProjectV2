@@ -1,7 +1,7 @@
 package com.blibli.future.service;
 
-import io.qameta.allure.restassured.AllureRestAssured;
 import com.blibli.future.utils.Utility;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 

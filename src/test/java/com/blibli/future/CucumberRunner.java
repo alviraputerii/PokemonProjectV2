@@ -1,7 +1,9 @@
 package com.blibli.future;
 
 import com.blibli.future.constant.ParamConstant;
-import com.blibli.future.data.*;
+import com.blibli.future.data.PokemonData;
+import com.blibli.future.data.PokemonJsonData;
+import com.blibli.future.data.PokemonListData;
 import com.blibli.future.utils.Utility;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;

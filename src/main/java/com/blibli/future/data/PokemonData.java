@@ -1,6 +1,5 @@
 package com.blibli.future.data;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
