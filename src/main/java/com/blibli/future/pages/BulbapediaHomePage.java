@@ -14,6 +14,15 @@ public class BulbapediaHomePage extends Utility {
     }
 
     public void searchPokemon(String keyword) {
+        String currentUrl = getDriver().getCurrentUrl();
         typeValueByXpath(searchInput, keyword);
+
+        if (getDriver().getCurrentUrl().equals(currentUrl)) {
+            System.out.println("------------------------------------------");
+            System.out.println(currentUrl);
+            System.out.println(getDriver().getCurrentUrl());
+            clickByXpath(searchInput);
+            sendKeyEnterWebsite(searchInput);
+        }
     }
 }

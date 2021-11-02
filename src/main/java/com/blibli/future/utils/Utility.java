@@ -125,6 +125,12 @@ public class Utility extends PageObject {
         webElement.sendKeys(value);
     }
 
+    protected void sendKeyEnterWebsite(By xpath) {
+        WebElement webElement = waitForCondition().until(
+                ExpectedConditions.visibilityOfElementLocated(xpath));
+        webElement.sendKeys(Keys.ENTER);
+    }
+
     protected void sendKeyEnterMobile() {
         getAndroidDriver().pressKey(new KeyEvent(AndroidKey.ENTER));
     }
@@ -143,7 +149,7 @@ public class Utility extends PageObject {
         try {
             jsonStr = Obj.writeValueAsString(obj);
         } catch (IOException e) {
-            System.out.println("parseObjectToJson:" + e);
+            e.printStackTrace();
         }
         return jsonStr;
     }
@@ -151,7 +157,6 @@ public class Utility extends PageObject {
     public void writeJsonFile(String fileName) {
         String path = System.getProperty("user.dir") + "\\target\\jsonData\\" + fileName + ".json";
         String data = objToJsonString(ParentJsonData.getParentData());
-        System.out.println(data);
         try {
             File file = new File(path);
             FileUtils.writeStringToFile(file, data, "UTF-8");

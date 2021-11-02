@@ -16,7 +16,7 @@ import java.util.List;
                 "io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm",
                 "json:target/destination/cucumber.json"},
         glue = {"com.blibli.future.steps"},
-        tags = "@Compare")
+        tags = "")
 
 public class CucumberRunner extends AbstractTestNGCucumberTests{
     Utility utility = new Utility();

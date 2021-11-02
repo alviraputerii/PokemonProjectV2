@@ -23,9 +23,19 @@ Feature: Feature - Compare Pokemon Data
 
     Examples:
       | pokemon   |
-      | pidgey    |
-      | rattata   |
-      | pikachu   |
+      | Pikachu   |
+      | Charizard |
+      | Eevee     |
+      | Mewtwo    |
+      | Koffing   |
+      | Meowth    |
+      | Blastoise |
+      | Ivysaur   |
+      | Squirtle  |
+      | Mew       |
+      | Pidgey    |
+      | Rattata   |
+      | Garurumon |
 
   @Api
   Scenario Outline: Scenario - Get pokemon data from api
@@ -39,12 +49,22 @@ Feature: Feature - Compare Pokemon Data
 
     Examples:
       | pokemon   |
-      | pidgey    |
-      | rattata   |
-      | pikachu   |
+      | Pikachu   |
+      | Charizard |
+      | Eevee     |
+      | Mewtwo    |
+      | Koffing   |
+      | Meowth    |
+      | Blastoise |
+      | Ivysaur   |
+      | Squirtle  |
+      | Mew       |
+      | Pidgey    |
+      | Rattata   |
+      | Garurumon |
 
   @Mobile
-  Scenario Outline: Scenario - Compare pokemon data from mobile pokemon app
+  Scenario Outline: Scenario - Get pokemon data from mobile pokemon app
     When  at pokedex app home page search for '<pokemon>'
     Then  at pokedex app pokemon page get following data
       | name      |
@@ -52,17 +72,37 @@ Feature: Feature - Compare Pokemon Data
       | baseStats |
 
     Examples:
-      | pokemon |
-      | Pidgey  |
-      | Rattata |
-      | Pikachu |
+      | pokemon   |
+      | Pikachu   |
+      | Charizard |
+      | Eevee     |
+      | Mewtwo    |
+      | Koffing   |
+      | Meowth    |
+      | Blastoise |
+      | Ivysaur   |
+      | Squirtle  |
+      | Mew       |
+      | Pidgey    |
+      | Rattata   |
+      | Garurumon |
 
   @Compare
   Scenario: Scenario - Compare pokemon data
     Given prepare pokemon parameter for following pokemon
+      | pikachu   |
+      | charizard |
+      | eevee     |
+      | mewtwo    |
+      | koffing   |
+      | meowth    |
+      | blastoise |
+      | ivysaur   |
+      | squirtle  |
+      | mew       |
       | pidgey    |
       | rattata   |
-      | pikachu   |
+      | garurumon |
     Then  compare all pokemon data
 
 

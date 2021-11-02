@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PokemonDbPokemonPage extends Utility {
-    private final By pokemonName = By.xpath("//*[@id='main']/h1");
+    private final By pokemonName = By.xpath("//main[@id='main']//em");
     private final By pokemonNumber = By.xpath("//div/table//th[text()='National №']/parent::tr/td/strong");
     private final By pokemonTypes = By.xpath("//div[contains(@class,'active')]//table//th[text()='Type']/parent::tr/td/a");
     private final By pokemonStats = By.xpath("//div[contains(@class,'active')]//h2[contains(text(),'Base stats')]/parent::div//tr/td[1]");
