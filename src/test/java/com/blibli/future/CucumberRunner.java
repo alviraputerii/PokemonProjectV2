@@ -1,47 +1,54 @@
 package com.blibli.future;
 
 import com.blibli.future.constant.ParamConstant;
+import com.blibli.future.data.*;
+import com.blibli.future.utils.Utility;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
-import org.apache.commons.io.FileUtils;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterClass;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
 
 @CucumberOptions(features = "src/test/resources/features/",
-        plugin = {"pretty", "html:target/cucumber-html-reports",
+        plugin = {"pretty", "html:target/cucuber-html-reports",
                 "io.qameta.allure.cucumber6jvm.AllureCucumber6Jvm",
                 "json:target/destination/cucumber.json"},
         glue = {"com.blibli.future.steps"},
         tags = "")
 
-public class CucumberRunner extends AbstractTestNGCucumberTests {
-//    public Utility utility = new Utility();
+public class CucumberRunner extends AbstractTestNGCucumberTests{
+    Utility utility = new Utility();
 
-//    @DataProvider(name = "data-provider")
-//    public Object[][] data() {
-//        String[] data = utility.getPokemon().split(",");
-//        Object[][] pokemon = new Object[data.length][];
-//        int i = 0;
-//        for (String row : data)
-//            pokemon[i++] = row.split(",");
-//        return pokemon;
-//    }
-
-//    @BeforeMethod
-//    @Factory(dataProvider="data-provider")
-//    public void createInstances() {
-//        PokemonParameter.setParameter("Pikachu");
-//    }
-
-    @BeforeClass
-    public void createJsonFile() throws IOException {
-        String[] files = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData, ParamConstant.pokedexAppData};
-        for (String fileName : files) {
-            String path = System.getProperty("user.dir") + "\\target\\jsonData\\" + fileName + ".json";
-            File file = new File(path);
-            FileUtils.writeStringToFile(file, "", "UTF-8");
+    @AfterClass
+    public void createJsonFile(){
+        String[] sources = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData, ParamConstant.pokedexAppData};
+        List<PokemonData> currData;
+        for (String source : sources) {
+            switch (source) {
+                case ParamConstant.bulbapediaData:
+                    currData = PokemonListData.getParentListData(ParamConstant.bulbapediaData);
+                    break;
+                case ParamConstant.pokemonDbData:
+                    currData = PokemonListData.getParentListData(ParamConstant.pokemonDbData);
+                    break;
+                case ParamConstant.pokeApiData:
+                    currData = PokemonListData.getParentListData(ParamConstant.pokeApiData);
+                    break;
+                default:
+                    currData = PokemonListData.getParentListData(ParamConstant.pokedexAppData);
+                    break;
+            }
+            if(currData.size()!=0) {
+                for (PokemonData dt : currData) {
+                    PokemonJsonData.putPokemonData(ParamConstant.name, dt.getName());
+                    PokemonJsonData.putPokemonData(ParamConstant.number, dt.getNumber());
+                    PokemonJsonData.putPokemonData(ParamConstant.type, dt.getType());
+                    PokemonJsonData.putPokemonData(ParamConstant.baseStats, dt.getBaseStats());
+                    utility.setPokemonData(PokemonJsonData.getPokemonData());
+                }
+                utility.writeJsonFile(source);
+            }
+            currData.clear();
         }
     }
 }

@@ -36,10 +36,7 @@ public class ComparePokemonSteps extends Utility {
     GetPokemonApiResponse getPokemonApiResponse;
     Response response;
     boolean isPokemonDbDataExist;
-    PokemonData bulbapediaPokemon = new PokemonData();
-    PokemonData pokemonDbPokemon = new PokemonData();
-    PokemonData pokeapiPokemon = new PokemonData();
-    PokemonData pokedexPokemon = new PokemonData();
+    PokemonData bulbapediaPokemon,pokemonDbPokemon,pokeapiPokemon,pokedexPokemon;
     SoftAssert softAssert = new SoftAssert();
     List<String> pokemons = new ArrayList<>();
 
@@ -72,14 +69,12 @@ public class ComparePokemonSteps extends Utility {
     @When("at bulbapedia home page search for {string}")
     public void atBulbapediaHomePageSearchForPokemonPokemon(String pokemon) {
         bulbapediaHomePage.searchPokemon(pokemon);
-//        bulbapediaHomePage.searchPokemon(PokemonParameter.getParameter());
     }
 
     @When("at pokemondb home page search for {string}")
     public void atPokemondbHomePageSearchForPokemonPokemon(String pokemon) {
         try {
             pokemonDbHomePage.searchPokemon(pokemon);
-//            pokemonDbHomePage.searchPokemon(PokemonParameter.getParameter());
             pokemonDbHomePage.clickPokemonPokedex();
             isPokemonDbDataExist = true;
         } catch (Exception e) {
@@ -91,7 +86,6 @@ public class ComparePokemonSteps extends Utility {
     public void sendApiRequestForPokemonPokemon(String pokemon) {
         PokeApiController pokeApiController = new PokeApiController();
         response = pokeApiController.getPokemon(getWebsiteUrl("urlPokeApi"), pokemon.toLowerCase());
-//        response = pokeApiController.getPokemon(getWebsiteUrl("urlPokeApi"), PokemonParameter.getParameter().toLowerCase());
     }
 
     @When("at pokedex app home page search for {string}")
@@ -108,24 +102,33 @@ public class ComparePokemonSteps extends Utility {
     //---------------------------- Get Data
     @Then("at bulbapedia pokemon page get following {string} data")
     public void atBulbapediaPokemonPageGetFollowingData(String pokemon, List<String> data) {
+        String name = "";
+        int number = 0;
+        List<String> types = new ArrayList<>();
+        Map<String, Integer> baseStats = new HashMap<>();
         try {
-            BulbapediaListData.createParentListData(Thread.currentThread().getId());
             for (String dt : data) {
                 switch (dt) {
                     case "name":
-                        BulbapediaListData.putParentListData(ParamConstant.name, bulbapediaPokemonPage.getPokemonName(), Thread.currentThread().getId());
+                        name = bulbapediaPokemonPage.getPokemonName();
                         break;
                     case "number":
-                        BulbapediaListData.putParentListData(ParamConstant.number, bulbapediaPokemonPage.getPokemonNumber(), Thread.currentThread().getId());
+                        number = bulbapediaPokemonPage.getPokemonNumber();
                         break;
                     case "types":
-                        BulbapediaListData.putParentListData(ParamConstant.type, bulbapediaPokemonPage.getPokemonTypes(), Thread.currentThread().getId());
+                        types.addAll(bulbapediaPokemonPage.getPokemonTypes());
                         break;
                     default:
-                        BulbapediaListData.putParentListData(ParamConstant.baseStats, bulbapediaPokemonPage.getPokemonStats(pokemon), Thread.currentThread().getId());
-//            BulbapediaListData.putParentListData(ParamConstant.baseStats, bulbapediaPokemonPage.getPokemonStats(PokemonParameter.getParameter()), Thread.currentThread().getId());
+                        baseStats.putAll(bulbapediaPokemonPage.getPokemonStats(pokemon));
                 }
             }
+            bulbapediaPokemon = PokemonData.builder()
+                    .name(name)
+                    .number(number)
+                    .type(types)
+                    .baseStats(baseStats)
+                    .build();
+            PokemonListData.putParentListData(bulbapediaPokemon, ParamConstant.bulbapediaData);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -137,22 +140,33 @@ public class ComparePokemonSteps extends Utility {
     public void atPokemondbPokemonPageGetFollowingData(List<String> data) {
         Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         if (isPokemonDbDataExist) {
-            PokemonDbListData.createParentListData(Thread.currentThread().getId());
+            String name = "";
+            int number = 0;
+            List<String> types = new ArrayList<>();
+            Map<String, Integer> baseStats = new HashMap<>();
+
             for (String dt : data) {
                 switch (dt) {
                     case "name":
-                        PokemonDbListData.putParentListData(ParamConstant.name, pokemonDbPokemonPage.getPokemonName(), Thread.currentThread().getId());
+                        name = pokemonDbPokemonPage.getPokemonName();
                         break;
                     case "number":
-                        PokemonDbListData.putParentListData(ParamConstant.number, pokemonDbPokemonPage.getPokemonNumber(), Thread.currentThread().getId());
+                        number = pokemonDbPokemonPage.getPokemonNumber();
                         break;
                     case "types":
-                        PokemonDbListData.putParentListData(ParamConstant.type, pokemonDbPokemonPage.getPokemonTypes(), Thread.currentThread().getId());
+                        types.addAll(pokemonDbPokemonPage.getPokemonTypes());
                         break;
                     default:
-                        PokemonDbListData.putParentListData(ParamConstant.baseStats, pokemonDbPokemonPage.getPokemonStats(), Thread.currentThread().getId());
+                        baseStats.putAll(pokemonDbPokemonPage.getPokemonStats());
                 }
             }
+            pokemonDbPokemon = PokemonData.builder()
+                    .name(name)
+                    .number(number)
+                    .type(types)
+                    .baseStats(baseStats)
+                    .build();
+            PokemonListData.putParentListData(pokemonDbPokemon, ParamConstant.pokemonDbData);
         }
     }
 
@@ -160,18 +174,22 @@ public class ComparePokemonSteps extends Utility {
     public void getFollowingDataFromResponse(List<String> data) {
         try {
             getPokemonApiResponse = response.getBody().as(GetPokemonApiResponse.class);
-            PokeApiListData.createParentListData(Thread.currentThread().getId());
+            String name = "";
+            int number = 0;
+            List<String> types = new ArrayList<>();
+            Map<String, Integer> baseStats = new HashMap<>();
+
             for (String dt : data) {
                 switch (dt) {
                     case "name":
-                        PokeApiListData.putParentListData(ParamConstant.name, getPokemonApiResponse.getName(), Thread.currentThread().getId());
+                        name = getPokemonApiResponse.getName();
                         break;
                     case "number":
-                        PokeApiListData.putParentListData(ParamConstant.number, getPokemonApiResponse.getId(), Thread.currentThread().getId());
+                        number = getPokemonApiResponse.getId().intValue();
                         break;
                     case "types":
                         List<String> pokeApiType = getPokemonApiResponse.getTypes().stream().map(ty -> ty.getType().getName()).collect(Collectors.toList());
-                        PokeApiListData.putParentListData(ParamConstant.type, pokeApiType, Thread.currentThread().getId());
+                        types.addAll(pokeApiType);
                         break;
                     default:
                         List<Integer> pokeApiStats = getPokemonApiResponse.getStats().stream().map(st -> st.getBase_stat().intValue()).collect(Collectors.toList());
@@ -179,9 +197,16 @@ public class ComparePokemonSteps extends Utility {
                         for (int i = 0; i < ParamConstant.baseStatsName.size(); i++) {
                             pokemonStats.put(ParamConstant.baseStatsName.get(i), pokeApiStats.get(i));
                         }
-                        PokeApiListData.putParentListData(ParamConstant.baseStats, pokemonStats, Thread.currentThread().getId());
+                        baseStats.putAll(pokemonStats);
                 }
             }
+            pokeapiPokemon = PokemonData.builder()
+                    .name(name)
+                    .number(number)
+                    .type(types)
+                    .baseStats(baseStats)
+                    .build();
+            PokemonListData.putParentListData(pokeapiPokemon, ParamConstant.pokeApiData);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -189,19 +214,30 @@ public class ComparePokemonSteps extends Utility {
 
     @Then("at pokedex app pokemon page get following data")
     public void atPokedexAppPokemonPageGetFollowingData(List<String> data) {
-        PokedexListData.createParentListData(Thread.currentThread().getId());
+        String name = "";
+        int number = 0;
+        List<String> types = new ArrayList<>();
+        Map<String, Integer> baseStats = new HashMap<>();
+
         for (String dt : data) {
             switch (dt) {
                 case "name":
-                    PokedexListData.putParentListData(ParamConstant.name, pokedexPokemonPage.getPokemonName(), Thread.currentThread().getId());
+                    name = pokedexPokemonPage.getPokemonName();
                     break;
                 case "number":
-                    PokedexListData.putParentListData(ParamConstant.number, pokedexPokemonPage.getPokemonNumber(), Thread.currentThread().getId());
+                    number = pokedexPokemonPage.getPokemonNumber();
                     break;
                 default:
-                    PokedexListData.putParentListData(ParamConstant.baseStats, pokedexPokemonPage.getPokemonStats(), Thread.currentThread().getId());
+                    baseStats.putAll(pokedexPokemonPage.getPokemonStats());
             }
         }
+        pokedexPokemon = PokemonData.builder()
+                .name(name)
+                .number(number)
+                .type(types)
+                .baseStats(baseStats)
+                .build();
+        PokemonListData.putParentListData(pokedexPokemon, ParamConstant.pokedexAppData);
         Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         getAndroidDriver().resetApp();
     }
@@ -210,45 +246,6 @@ public class ComparePokemonSteps extends Utility {
     @Given("prepare pokemon parameter for following pokemon")
     public void preparePokemonParameterForFollowingPokemon(List<String> data) {
         pokemons.addAll(data);
-    }
-
-    @When("save pokemon data to json")
-    public void saveData() throws InterruptedException {
-//        boolean complete = false;
-//        while (!complete) {
-//            Thread.sleep(2000);
-//            System.out.println("test :(");
-//            if (PokemonDbListData.getParentListData().size() == pokemons.size())
-//                complete = true;
-//        }
-//        System.out.println("test :)");
-
-        String[] sources = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData, ParamConstant.pokedexAppData};
-        List<PokemonData> currData;
-        for (String source : sources) {
-            switch (source) {
-                case ParamConstant.bulbapediaData:
-                    currData = BulbapediaListData.getParentListData();
-                    break;
-                case ParamConstant.pokemonDbData:
-                    currData = PokemonDbListData.getParentListData();
-                    break;
-                case ParamConstant.pokeApiData:
-                    currData = PokeApiListData.getParentListData();
-                    break;
-                default:
-                    currData = PokedexListData.getParentListData();
-                    break;
-            }
-            for (PokemonData dt : currData) {
-                PokemonJsonData.putPokemonData(ParamConstant.name, dt.getName());
-                PokemonJsonData.putPokemonData(ParamConstant.number, dt.getNumber());
-                PokemonJsonData.putPokemonData(ParamConstant.type, dt.getType());
-                PokemonJsonData.putPokemonData(ParamConstant.baseStats, dt.getBaseStats());
-                setPokemonData(PokemonJsonData.getPokemonData());
-            }
-            writeJsonFile(source);
-        }
     }
 
     @Then("compare all pokemon data")

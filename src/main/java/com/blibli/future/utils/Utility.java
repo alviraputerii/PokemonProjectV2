@@ -11,6 +11,7 @@ import io.appium.java_client.android.nativekey.KeyEvent;
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.webdriver.ThucydidesWebDriverSupport;
 import net.thucydides.core.webdriver.WebDriverFacade;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -152,9 +153,8 @@ public class Utility extends PageObject {
         String data = objToJsonString(ParentJsonData.getParentData());
         System.out.println(data);
         try {
-            FileWriter writer = new FileWriter(path, true);
-            writer.write(data);
-            writer.flush();
+            File file = new File(path);
+            FileUtils.writeStringToFile(file, data, "UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
