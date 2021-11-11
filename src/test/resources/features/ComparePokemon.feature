@@ -53,6 +53,7 @@ Feature: Feature - Compare Pokemon Data
       | charizard |
       | eevee     |
       | mewtwo    |
+      | garurumon |
       | koffing   |
       | meowth    |
       | blastoise |
@@ -61,7 +62,6 @@ Feature: Feature - Compare Pokemon Data
       | mew       |
       | pidgey    |
       | rattata   |
-      | garurumon |
 
   @Mobile
   Scenario Outline: Scenario - Get pokemon data from mobile pokemon app
@@ -73,19 +73,19 @@ Feature: Feature - Compare Pokemon Data
 
     Examples:
       | pokemon   |
-      | pikachu   |
-      | charizard |
-      | eevee     |
-      | mewtwo    |
-      | koffing   |
-      | meowth    |
-      | blastoise |
-      | ivysaur   |
-      | squirtle  |
-      | mew       |
-      | pidgey    |
-      | rattata   |
-      | garurumon |
+      | Pikachu   |
+      | Charizard |
+      | Eevee     |
+      | Mewtwo    |
+      | Garurumon |
+      | Koffing   |
+      | Meowth    |
+      | Blastoise |
+      | Ivysaur   |
+      | Squirtle  |
+      | Mew       |
+      | Pidgey    |
+      | Rattata   |
 
   @Compare
   Scenario: Scenario - Compare pokemon data
