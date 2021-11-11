@@ -8,9 +8,9 @@ import org.openqa.selenium.WebElement;
 public class PokemonDbHomePage extends Utility {
     CommonAction commonAction;
 
-    private final By privacyControlOk = By.xpath("//*[@id='gdpr-confirm']//button");
-    private final By searchInput = By.xpath("//*[@id='sitesearch']");
-    private final By pokemonResult = By.xpath("//div[@class='gsc-webResult gsc-result'][1]//div[@class='gs-title']/a");
+    private final String privacyControlOk = "//*[@id='gdpr-confirm']//button";
+    private final String searchInput = "//*[@id='sitesearch']";
+    private final String pokemonResult = "//div[@class='gsc-webResult gsc-result'][1]//div[@class='gs-title']/a";
 
     public void openPokemonDbHomePage() {
         commonAction.openPage(getWebsiteUrl("urlPokemonDb"));
@@ -18,17 +18,17 @@ public class PokemonDbHomePage extends Utility {
 
     public void searchPokemon(String keyword) {
         try {
-            if (isElementVisibleByXpath(privacyControlOk)) clickByXpath(privacyControlOk);
+            if (isElementVisibleByString(privacyControlOk)) clickByString(privacyControlOk);
         } catch (Exception ex) {
             System.out.println("no such element");
         }
 
-        clickByXpath(searchInput);
-        typeValueByXpath(searchInput, keyword);
+        clickByString(searchInput);
+        typeValueByString(searchInput, keyword);
     }
 
     public void clickPokemonPokedex() {
-        WebElement dataClick = getDriver().findElement(pokemonResult);
+        WebElement dataClick = getDriver().findElement(By.xpath(pokemonResult));
         clickByWebElement(dataClick, getDriver());
     }
 }

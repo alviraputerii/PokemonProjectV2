@@ -172,7 +172,7 @@ public class ComparePokemonSteps extends Utility {
             for (String dt : data) {
                 switch (dt) {
                     case "name":
-                        pokeapiPokemon.setName(getPokemonApiResponse.getName());
+                        pokeapiPokemon.setName(getPokemonApiResponse.getName().toLowerCase());
                         break;
                     case "number":
                         pokeapiPokemon.setNumber(getPokemonApiResponse.getId().intValue());

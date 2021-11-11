@@ -59,21 +59,9 @@ public class Utility extends PageObject {
         js.executeScript("arguments[0].click();", element);
     }
 
-    protected void clickByXpath(By xpath) {
+    protected void clickByString(String xpath) {
         WebElement webElement = waitForCondition().until(
-                ExpectedConditions.visibilityOfElementLocated(xpath));
-        try {
-            webElement.click();
-        } catch (Exception e) {
-            System.out.println("click normal failed");
-            clickByWebElement(webElement, getDriver());
-        }
-    }
-
-    protected void clickByString(String string) {
-        By xpath = By.xpath(string);
-        WebElement webElement = waitForCondition().until(
-                ExpectedConditions.visibilityOfElementLocated(xpath));
+                ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
         try {
             webElement.click();
         } catch (Exception e) {
@@ -88,12 +76,6 @@ public class Utility extends PageObject {
         return getDriver().getCurrentUrl().contains(url);
     }
 
-    protected String getTextByXpath(By xpath) {
-        WebElement webElement = waitForCondition().until(
-                ExpectedConditions.visibilityOfElementLocated(xpath));
-        return webElement.getText();
-    }
-
     protected String getTextByString(String string) {
         By xpath = By.xpath(string);
         WebElement webElement = waitForCondition().until(
@@ -101,33 +83,33 @@ public class Utility extends PageObject {
         return webElement.getText();
     }
 
-    protected List<WebElement> getALlWebElementByXpath(By xpath) {
+    protected List<WebElement> getALlWebElementByString(String xpath) {
         return waitForCondition().until(
-                ExpectedConditions.visibilityOfAllElementsLocatedBy(xpath));
+                ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(xpath)));
     }
 
-    protected Boolean isElementVisibleByXpath(By xpath) {
+    protected Boolean isElementVisibleByString(String xpath) {
         WebElement webElement = waitForCondition().until(
-                ExpectedConditions.elementToBeClickable(xpath));
+                ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
         return webElement != null;
     }
 
-    protected void typeValueByXpath(By xpath, String value) {
+    protected void typeValueByString(String xpath, String value) {
         WebElement webElement = waitForCondition().until(
-                ExpectedConditions.visibilityOfElementLocated(xpath));
+                ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
         webElement.sendKeys(value);
         webElement.sendKeys(Keys.ENTER);
     }
 
-    protected void typeValueWithoutEnterByXpath(By xpath, String value) {
+    protected void typeValueWithoutEnterByString(String xpath, String value) {
         WebElement webElement = waitForCondition().until(
-                ExpectedConditions.visibilityOfElementLocated(xpath));
+                ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
         webElement.sendKeys(value);
     }
 
-    protected void sendKeyEnterWebsite(By xpath) {
+    protected void sendKeyEnterWebsite(String xpath) {
         WebElement webElement = waitForCondition().until(
-                ExpectedConditions.visibilityOfElementLocated(xpath));
+                ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
         webElement.sendKeys(Keys.ENTER);
     }
 
