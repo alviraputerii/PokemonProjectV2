@@ -28,7 +28,11 @@ public class PokemonDbHomePage extends Utility {
     }
 
     public void clickPokemonPokedex() {
-        WebElement dataClick = getDriver().findElement(By.xpath(pokemonResult));
-        clickByWebElement(dataClick, getDriver());
+        try {
+            WebElement dataClick = getDriver().findElement(By.xpath(pokemonResult));
+            clickByWebElement(dataClick, getDriver());
+        }catch (Exception e){
+            clickByString(pokemonResult);
+        }
     }
 }

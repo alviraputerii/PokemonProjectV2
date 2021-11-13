@@ -4,7 +4,6 @@ Feature: Feature - Compare Pokemon Data
   @Website
   Scenario Outline: Scenario - Get pokemon data from some pokemon website
     Given open bulbapedia home page
-    And   bulbapedia home page should be opened
     When  at bulbapedia home page search for '<pokemon>'
     Then  at bulbapedia pokemon page get following '<pokemon>' data
       | name      |
@@ -13,7 +12,6 @@ Feature: Feature - Compare Pokemon Data
       | baseStats |
 
     Given open pokemondb home page
-    And   pokemondb home page should be opened
     When  at pokemondb home page search for '<pokemon>'
     Then  at pokemondb pokemon page get following data
       | name      |

@@ -12,11 +12,11 @@ public class CommonAction extends Utility {
         openAt(url);
     }
 
-    public Boolean verifyPageIsOpened(String url) {
+    public void waitPageObjectLoad() {
         new WebDriverWait(getDriver(), 10).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
-        return verifyUrlIsOpened(url);
     }
+
     public void switchTabs(){
         ArrayList<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
         getDriver().switchTo().window(tabs.get(0));

@@ -45,24 +45,13 @@ public class ComparePokemonSteps extends Utility {
     public void openBulbapediaHomePage() {
         commonAction.switchTabs();
         bulbapediaHomePage.openBulbapediaHomePage();
+        commonAction.waitPageObjectLoad();
     }
 
     @Given("open pokemondb home page")
     public void openPokemondbHomePage() {
         pokemonDbHomePage.openPokemonDbHomePage();
-    }
-
-    //---------------------------- Verify Page is Opened
-    @Given("bulbapedia home page should be opened")
-    public void bulbapediaHomePageShouldBeOpened() {
-        String url = getWebsiteUrl("urlBulbapedia");
-        softAssert.assertTrue(commonAction.verifyPageIsOpened(url), "page not opened");
-    }
-
-    @Given("pokemondb home page should be opened")
-    public void pokemondbHomePageShouldBeOpened() {
-        String url = getWebsiteUrl("urlPokemonDb");
-        softAssert.assertTrue(commonAction.verifyPageIsOpened(url), "page not opened");
+        commonAction.waitPageObjectLoad();
     }
 
     //---------------------------- Search for Pokemon
@@ -75,6 +64,7 @@ public class ComparePokemonSteps extends Utility {
     public void atPokemondbHomePageSearchForPokemonPokemon(String pokemon) {
         try {
             pokemonDbHomePage.searchPokemon(pokemon);
+            commonAction.waitPageObjectLoad();
             pokemonDbHomePage.clickPokemonPokedex();
             isPokemonDbDataExist = true;
         } catch (Exception e) {
@@ -113,6 +103,7 @@ public class ComparePokemonSteps extends Utility {
     public void atBulbapediaPokemonPageGetFollowingData(String pokemon, List<String> data) {
         bulbapediaPokemon = new PokemonData();
         try {
+            commonAction.waitPageObjectLoad();
             for (String dt : data) {
                 switch (dt) {
                     case "name":
@@ -144,6 +135,7 @@ public class ComparePokemonSteps extends Utility {
         Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         if (isPokemonDbDataExist) {
             pokemonDbPokemon = new PokemonData();
+            commonAction.waitPageObjectLoad();
             for (String dt : data) {
                 switch (dt) {
                     case "name":
