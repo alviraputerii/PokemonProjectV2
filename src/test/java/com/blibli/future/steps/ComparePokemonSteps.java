@@ -7,6 +7,7 @@ import com.blibli.future.pages.*;
 import com.blibli.future.response.GetPokemonApiResponse;
 import com.blibli.future.service.PokeApiController;
 import com.blibli.future.utils.Utility;
+import com.blibli.future.utils.VideoRecorder_utlity;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -42,7 +43,8 @@ public class ComparePokemonSteps extends Utility {
 
     //---------------------------- Open URL
     @Given("open bulbapedia home page")
-    public void openBulbapediaHomePage() {
+    public void openBulbapediaHomePage() throws Exception {
+        VideoRecorder_utlity.startRecord("WebsiteTestRecording");
         commonAction.switchTabs();
         bulbapediaHomePage.openBulbapediaHomePage();
         commonAction.waitPageObjectLoad();
@@ -131,7 +133,7 @@ public class ComparePokemonSteps extends Utility {
     }
 
     @Then("at pokemondb pokemon page get following data")
-    public void atPokemondbPokemonPageGetFollowingData(List<String> data) {
+    public void atPokemondbPokemonPageGetFollowingData(List<String> data) throws Exception {
         Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         if (isPokemonDbDataExist) {
             pokemonDbPokemon = new PokemonData();
@@ -153,6 +155,7 @@ public class ComparePokemonSteps extends Utility {
             }
             PokemonListData.putParentListData(pokemonDbPokemon, ParamConstant.pokemonDbData);
         }
+        VideoRecorder_utlity.stopRecord();
         softAssert.assertAll();
     }
 
