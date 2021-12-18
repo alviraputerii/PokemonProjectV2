@@ -12,4 +12,5 @@ public class GetPokemonApiResponse {
     private String name;
     private List<Stat> stats;
     private List<Type> types;
+    private Long base_experience;
 }

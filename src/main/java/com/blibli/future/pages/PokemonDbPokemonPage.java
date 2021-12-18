@@ -14,6 +14,7 @@ public class PokemonDbPokemonPage extends Utility {
     private final String pokemonNumber = "//div/table//th[text()='National №']/parent::tr/td/strong";
     private final String pokemonTypes = "//div[contains(@class,'active')]//table//th[text()='Type']/parent::tr/td/a";
     private final String pokemonStats = "//div[contains(@class,'active')]//h2[contains(text(),'Base stats')]/parent::div//tr/td[1]";
+    private final String pokemonBaseExperience = "//div[contains(@class,'active')]//table//th[text()='Base Exp.']/following-sibling::td";
 
     public String getPokemonName() {
         return getTextByString(pokemonName).toLowerCase();
@@ -34,5 +35,9 @@ public class PokemonDbPokemonPage extends Utility {
             pokemonStats.put(ParamConstant.baseStatsName.get(i), Integer.valueOf(stats.get(i).getAttribute("textContent")));
         }
         return pokemonStats;
+    }
+
+    public Integer getPokemonBaseExperience() {
+        return Integer.valueOf(getTextByString(pokemonBaseExperience));
     }
 }

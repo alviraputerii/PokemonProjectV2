@@ -70,16 +70,9 @@ public class Utility extends PageObject {
         }
     }
 
-    protected Boolean verifyUrlIsOpened(String url) {
-        System.out.println("currentUrl: " + getDriver().getCurrentUrl());
-        System.out.println("expected: " + url);
-        return getDriver().getCurrentUrl().contains(url);
-    }
-
     protected String getTextByString(String string) {
-        By xpath = By.xpath(string);
         WebElement webElement = waitForCondition().until(
-                ExpectedConditions.visibilityOfElementLocated(xpath));
+                ExpectedConditions.visibilityOfElementLocated(By.xpath(string)));
         return webElement.getText();
     }
 

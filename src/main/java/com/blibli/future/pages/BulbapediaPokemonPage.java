@@ -16,6 +16,7 @@ public class BulbapediaPokemonPage extends Utility {
     private final String pokemonType = "//a[contains(@title,'Type')]/ancestor::td//td[1]/table//a[contains(@title,'(type)')]//b[not(contains(text(),'Unknown'))]";
     private final String pokemonBaseStat = "//*[@id='Base_stats']/parent::h4/following-sibling::table[1]//div[2]";
     private final String pikachuBaseStat = "//*[@id='Generation_VI_onward']/parent::h5/following-sibling::table[1]//div[2]";
+    private final String pokemonBaseExperience = "//a[contains(@title,'Experience')]/parent::b/following-sibling::table//td[3]";
 
     public String getPokemonName() {
         return getTextByString(pokemonName).split(" ")[0].toLowerCase();
@@ -37,5 +38,9 @@ public class BulbapediaPokemonPage extends Utility {
             pokemonStats.put(ParamConstant.baseStatsName.get(i), Integer.valueOf(stats.get(i).getAttribute("textContent")));
         }
         return pokemonStats;
+    }
+    public Integer getPokemonBaseExperience() {
+        String experience = getTextByString(pokemonBaseExperience);
+        return Integer.valueOf(experience.substring(0,experience.length()-3));
     }
 }

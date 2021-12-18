@@ -45,8 +45,8 @@ public class ComparePokemonSteps extends Utility {
     @Given("open bulbapedia home page")
     public void openBulbapediaHomePage() throws Exception {
         VideoRecorder_utlity.startRecord("WebsiteTestRecording");
-        commonAction.switchTabs();
         bulbapediaHomePage.openBulbapediaHomePage();
+        commonAction.switchTabs();
         commonAction.waitPageObjectLoad();
     }
 
@@ -117,8 +117,11 @@ public class ComparePokemonSteps extends Utility {
                     case "types":
                         bulbapediaPokemon.setType(bulbapediaPokemonPage.getPokemonTypes());
                         break;
-                    default:
+                    case "baseStats":
                         bulbapediaPokemon.setBaseStats(bulbapediaPokemonPage.getPokemonStats(pokemon));
+                        break;
+                    default:
+                        bulbapediaPokemon.setBaseExperience(bulbapediaPokemonPage.getPokemonBaseExperience());
                 }
             }
             PokemonListData.putParentListData(bulbapediaPokemon, ParamConstant.bulbapediaData);
@@ -149,8 +152,11 @@ public class ComparePokemonSteps extends Utility {
                     case "types":
                         pokemonDbPokemon.setType(pokemonDbPokemonPage.getPokemonTypes());
                         break;
-                    default:
+                    case "baseStats":
                         pokemonDbPokemon.setBaseStats(pokemonDbPokemonPage.getPokemonStats());
+                        break;
+                    default:
+                        pokemonDbPokemon.setBaseExperience(pokemonDbPokemonPage.getPokemonBaseExperience());
                 }
             }
             PokemonListData.putParentListData(pokemonDbPokemon, ParamConstant.pokemonDbData);
@@ -176,13 +182,15 @@ public class ComparePokemonSteps extends Utility {
                         List<String> pokeApiType = getPokemonApiResponse.getTypes().stream().map(ty -> ty.getType().getName()).collect(Collectors.toList());
                         pokeapiPokemon.setType(pokeApiType);
                         break;
-                    default:
+                    case "baseStats":
                         List<Integer> pokeApiStats = getPokemonApiResponse.getStats().stream().map(st -> st.getBase_stat().intValue()).collect(Collectors.toList());
                         Map<String, Integer> pokemonStats = new HashMap<>();
                         for (int i = 0; i < ParamConstant.baseStatsName.size(); i++) {
                             pokemonStats.put(ParamConstant.baseStatsName.get(i), pokeApiStats.get(i));
                         }
                         pokeapiPokemon.setBaseStats(pokemonStats);
+                    default:
+                        pokeapiPokemon.setBaseExperience(getPokemonApiResponse.getBase_experience().intValue());
                 }
             }
             PokemonListData.putParentListData(pokeapiPokemon, ParamConstant.pokeApiData);
@@ -277,6 +285,10 @@ public class ComparePokemonSteps extends Utility {
                         bulbapediaPokemon.getBaseStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokeapiPokemon.getBaseStats().get(e.getKey()))) &&
                         bulbapediaPokemon.getBaseStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokedexPokemon.getBaseStats().get(e.getKey())));
                 softAssert.assertTrue(checkStats, "Pokemon base stat doesn't match");
+
+                boolean checkExperience = bulbapediaPokemon.getBaseExperience() == pokemonDbPokemon.getBaseExperience() &&
+                        bulbapediaPokemon.getBaseExperience() == pokeapiPokemon.getBaseExperience();
+                softAssert.assertTrue(checkExperience, "Pokemon base experience doesn't match");
             } else {
                 softAssert.assertTrue(isBulbapediaDataExist, "Comparison failed because pokemon " + pokemon + " doesn't exist in Bulbapedia");
                 softAssert.assertTrue(isPokemonDbDataExist, "Comparison failed because pokemon " + pokemon + " doesn't exist in PokemonDb");
