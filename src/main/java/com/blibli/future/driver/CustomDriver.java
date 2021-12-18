@@ -1,12 +1,16 @@
 package com.blibli.future.driver;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import net.serenitybdd.core.environment.EnvironmentSpecificConfiguration;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
 import net.thucydides.core.webdriver.DriverSource;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -51,9 +55,11 @@ public class CustomDriver implements DriverSource {
             DesiredCapabilities dr = DesiredCapabilities.firefox();
             dr.setBrowserName("firefox");
             dr.setPlatform(Platform.WINDOWS);
-            dr.setCapability("headless",false);
+            FirefoxOptions opt = new FirefoxOptions();
+            opt.addArguments("--private");
+            opt.merge(dr);
             try {
-                return new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), dr);
+                return new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), opt);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
