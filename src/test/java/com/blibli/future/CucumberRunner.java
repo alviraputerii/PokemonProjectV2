@@ -47,6 +47,8 @@ public class CucumberRunner extends AbstractTestNGCucumberTests{
                     PokemonJsonData.putPokemonData(ParamConstant.type, dt.getType());
                     PokemonJsonData.putPokemonData(ParamConstant.baseStats, dt.getBaseStats());
                     PokemonJsonData.putPokemonData(ParamConstant.baseExperience, dt.getBaseExperience());
+                    PokemonJsonData.putPokemonData(ParamConstant.species, dt.getSpecies());
+                    PokemonJsonData.putPokemonData(ParamConstant.growthRate, dt.getGrowthRate());
                     utility.setPokemonData(PokemonJsonData.getPokemonData());
                 }
                 utility.writeJsonFile(source);
