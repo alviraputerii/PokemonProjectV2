@@ -10,6 +10,8 @@ public class ParamConstant {
     public final static String type = "type";
     public final static String baseStats = "baseStats";
     public final static String baseExperience = "baseExperience";
+    public final static String species = "species";
+    public final static String growthRate = "growthRate";
     public final static String bulbapediaData = "bulbapediaData";
     public final static String pokemonDbData = "pokemonDbData";
     public final static String pokeApiData = "pokeApiData";

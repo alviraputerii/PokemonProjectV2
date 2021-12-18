@@ -12,4 +12,6 @@ public class PokemonData {
     private List<String> type;
     private Map<String, Integer> baseStats;
     private int baseExperience;
+    private String species;
+    private String growthRate;
 }

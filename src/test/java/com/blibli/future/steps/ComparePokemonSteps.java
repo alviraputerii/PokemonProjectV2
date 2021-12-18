@@ -120,8 +120,14 @@ public class ComparePokemonSteps extends Utility {
                     case "baseStats":
                         bulbapediaPokemon.setBaseStats(bulbapediaPokemonPage.getPokemonStats(pokemon));
                         break;
-                    default:
+                    case "baseExperience":
                         bulbapediaPokemon.setBaseExperience(bulbapediaPokemonPage.getPokemonBaseExperience());
+                        break;
+                    case "species":
+                        bulbapediaPokemon.setSpecies(bulbapediaPokemonPage.getPokemonSpecies());
+                        break;
+                    default:
+                        bulbapediaPokemon.setGrowthRate(bulbapediaPokemonPage.getPokemonGrowthRate());
                 }
             }
             PokemonListData.putParentListData(bulbapediaPokemon, ParamConstant.bulbapediaData);
@@ -155,8 +161,14 @@ public class ComparePokemonSteps extends Utility {
                     case "baseStats":
                         pokemonDbPokemon.setBaseStats(pokemonDbPokemonPage.getPokemonStats());
                         break;
-                    default:
+                    case "baseExperience":
                         pokemonDbPokemon.setBaseExperience(pokemonDbPokemonPage.getPokemonBaseExperience());
+                        break;
+                    case "species":
+                        pokemonDbPokemon.setSpecies(pokemonDbPokemonPage.getPokemonSpecies());
+                        break;
+                    default:
+                        pokemonDbPokemon.setGrowthRate(pokemonDbPokemonPage.getPokemonGrowthRate());
                 }
             }
             PokemonListData.putParentListData(pokemonDbPokemon, ParamConstant.pokemonDbData);
@@ -289,6 +301,12 @@ public class ComparePokemonSteps extends Utility {
                 boolean checkExperience = bulbapediaPokemon.getBaseExperience() == pokemonDbPokemon.getBaseExperience() &&
                         bulbapediaPokemon.getBaseExperience() == pokeapiPokemon.getBaseExperience();
                 softAssert.assertTrue(checkExperience, "Pokemon base experience doesn't match");
+
+                boolean checkSpecies = bulbapediaPokemon.getSpecies().equals(pokemonDbPokemon.getSpecies());
+                softAssert.assertTrue(checkSpecies, "Pokemon species doesn't match");
+
+                boolean checkGrowthRate = bulbapediaPokemon.getGrowthRate().equals(pokemonDbPokemon.getGrowthRate());
+                softAssert.assertTrue(checkGrowthRate, "Pokemon growth rate doesn't match");
             } else {
                 softAssert.assertTrue(isBulbapediaDataExist, "Comparison failed because pokemon " + pokemon + " doesn't exist in Bulbapedia");
                 softAssert.assertTrue(isPokemonDbDataExist, "Comparison failed because pokemon " + pokemon + " doesn't exist in PokemonDb");

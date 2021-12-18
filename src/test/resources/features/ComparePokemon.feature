@@ -11,6 +11,8 @@ Feature: Feature - Compare Pokemon Data
       | types          |
       | baseStats      |
       | baseExperience |
+      | species        |
+      | growthRate     |
 
     Given open pokemondb home page
     When  at pokemondb home page search for '<pokemon>'
@@ -20,6 +22,8 @@ Feature: Feature - Compare Pokemon Data
       | types          |
       | baseStats      |
       | baseExperience |
+      | species        |
+      | growthRate     |
 
     Examples:
       | pokemon |
