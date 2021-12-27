@@ -32,8 +32,8 @@ public class BulbapediaPokemonPage extends Utility {
         return getALlWebElementByString(pokemonType).stream().map(type -> type.getAttribute("textContent").toLowerCase()).collect(Collectors.toList());
     }
 
-    public Map<String, Integer> getPokemonStats(String poke) {
-        String pokemonStat = poke.equalsIgnoreCase("pikachu") ? pikachuBaseStat : pokemonBaseStat;
+    public Map<String, Integer> getPokemonStats() {
+        String pokemonStat = isElementVisibleByString(pokemonBaseStat) ? pokemonBaseStat : pikachuBaseStat;
         List<WebElement> stats = getALlWebElementByString(pokemonStat);
         Map<String, Integer> pokemonStats = new HashMap<>();
         for (int i = 0; i < ParamConstant.baseStatsName.size(); i++) {

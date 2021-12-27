@@ -45,8 +45,8 @@ public class ComparePokemonSteps extends Utility {
     @Given("open bulbapedia home page")
     public void openBulbapediaHomePage() throws Exception {
         VideoRecorder_utlity.startRecord("WebsiteTestRecording");
-        bulbapediaHomePage.openBulbapediaHomePage();
         commonAction.switchTabs();
+        bulbapediaHomePage.openBulbapediaHomePage();
         commonAction.waitPageObjectLoad();
     }
 
@@ -118,7 +118,7 @@ public class ComparePokemonSteps extends Utility {
                         bulbapediaPokemon.setType(bulbapediaPokemonPage.getPokemonTypes());
                         break;
                     case "baseStats":
-                        bulbapediaPokemon.setBaseStats(bulbapediaPokemonPage.getPokemonStats(pokemon));
+                        bulbapediaPokemon.setBaseStats(bulbapediaPokemonPage.getPokemonStats());
                         break;
                     case "baseExperience":
                         bulbapediaPokemon.setBaseExperience(bulbapediaPokemonPage.getPokemonBaseExperience());
