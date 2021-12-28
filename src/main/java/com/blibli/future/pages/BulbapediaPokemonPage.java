@@ -15,7 +15,7 @@ public class BulbapediaPokemonPage extends Utility {
     private final String pokemonNumber = "//th//a[contains(@title,'National Pokédex number')]";
     private final String pokemonType = "//a[contains(@title,'Type')]/ancestor::td//td[1]/table//a[contains(@title,'(type)')]//b[not(contains(text(),'Unknown'))]";
     private final String pokemonBaseStat = "//*[@id='Base_stats']/parent::h4/following-sibling::table[1]//div[2]";
-    private final String pikachuBaseStat = "//*[@id='Generation_VI_onward']/parent::h5/following-sibling::table[1]//div[2]";
+    private final String otherBaseStat = "//span[contains(@id,'onward')]/parent::h5/following-sibling::table[1]//div[2]";
     private final String pokemonBaseExperience = "//a[contains(@title,'Experience')]/parent::b/following-sibling::table//td[3]";
     private final String pokemonSpecies = "//a[contains(@title,'Pokémon category')]/span";
     private final String pokemonGrowthRate = "//span[contains(text(),'Leveling rate')]/ancestor::b/following-sibling::table//td";
@@ -33,7 +33,7 @@ public class BulbapediaPokemonPage extends Utility {
     }
 
     public Map<String, Integer> getPokemonStats() {
-        String pokemonStat = isElementVisibleByString(pokemonBaseStat) ? pokemonBaseStat : pikachuBaseStat;
+        String pokemonStat = isElementVisibleByString(otherBaseStat) ? otherBaseStat : pokemonBaseStat;
         List<WebElement> stats = getALlWebElementByString(pokemonStat);
         Map<String, Integer> pokemonStats = new HashMap<>();
         for (int i = 0; i < ParamConstant.baseStatsName.size(); i++) {
