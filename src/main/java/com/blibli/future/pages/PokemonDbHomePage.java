@@ -11,7 +11,6 @@ public class PokemonDbHomePage extends Utility {
     private final String privacyControlOk = "//*[@id='gdpr-confirm']//button";
     private final String searchInput = "//*[@id='sitesearch']";
     private final String pokemonResult = "//div[@class='gsc-webResult gsc-result'][1]//div[@class='gs-title']/a";
-    private final String buttonSearch = "//button[@class='gsc-search-button gsc-search-button-v2']";
 
     public void openPokemonDbHomePage() {
         commonAction.openPage(getWebsiteUrl("urlPokemonDb"));
@@ -32,7 +31,7 @@ public class PokemonDbHomePage extends Utility {
         try {
             WebElement dataClick = getDriver().findElement(By.xpath(pokemonResult));
             System.out.println(dataClick.getAttribute("data-cturl"));
-            while(!dataClick.getAttribute("data-cturl").contains("pokedex")){clickByString(buttonSearch);}
+            while(!dataClick.getAttribute("data-cturl").contains("pokedex")){getDriver().navigate().refresh();}
             clickByWebElement(dataClick, getDriver());
         }catch (Exception e){
             clickByString(pokemonResult);
