@@ -28,18 +28,18 @@ Feature: Feature - Compare Pokemon Data
     Examples:
       | pokemon |
       | pikachu |
-#      | charizard |
-#      | eevee     |
-#      | mewtwo    |
-#      | garurumon |
-#      | koffing   |
-#      | meowth    |
-#      | blastoise |
-#      | ivysaur   |
-#      | squirtle  |
-#      | mew       |
-#      | pidgey    |
-#      | rattata   |
+      | charizard |
+      | eevee     |
+      | mewtwo    |
+      | garurumon |
+      | koffing   |
+      | meowth    |
+      | blastoise |
+      | ivysaur   |
+      | squirtle  |
+      | mew       |
+      | pidgey    |
+      | rattata   |
 
   @Api
   Scenario Outline: Scenario - Get pokemon data from api

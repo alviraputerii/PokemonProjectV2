@@ -43,17 +43,16 @@ public class ComparePokemonSteps extends Utility {
 
     //---------------------------- Open URL
     @Given("open bulbapedia home page")
-    public void openBulbapediaHomePage() throws Exception {
-        VideoRecorder_utlity.startRecord("WebsiteTestRecording");
+    public void openBulbapediaHomePage(){
         commonAction.switchTabs();
         bulbapediaHomePage.openBulbapediaHomePage();
-        commonAction.waitPageObjectLoad();
+//        commonAction.waitPageObjectLoad();
     }
 
     @Given("open pokemondb home page")
     public void openPokemondbHomePage() {
         pokemonDbHomePage.openPokemonDbHomePage();
-        commonAction.waitPageObjectLoad();
+//        commonAction.waitPageObjectLoad();
     }
 
     //---------------------------- Search for Pokemon
@@ -66,7 +65,7 @@ public class ComparePokemonSteps extends Utility {
     public void atPokemondbHomePageSearchForPokemonPokemon(String pokemon) {
         try {
             pokemonDbHomePage.searchPokemon(pokemon);
-            commonAction.waitPageObjectLoad();
+//            commonAction.waitPageObjectLoad();
             pokemonDbHomePage.clickPokemonPokedex();
             isPokemonDbDataExist = true;
         } catch (Exception e) {
@@ -105,7 +104,7 @@ public class ComparePokemonSteps extends Utility {
     public void atBulbapediaPokemonPageGetFollowingData(String pokemon, List<String> data) {
         bulbapediaPokemon = new PokemonData();
         try {
-            commonAction.waitPageObjectLoad();
+//            commonAction.waitPageObjectLoad();
             for (String dt : data) {
                 switch (dt) {
                     case "name":
@@ -146,7 +145,7 @@ public class ComparePokemonSteps extends Utility {
         Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         if (isPokemonDbDataExist) {
             pokemonDbPokemon = new PokemonData();
-            commonAction.waitPageObjectLoad();
+//            commonAction.waitPageObjectLoad();
             for (String dt : data) {
                 switch (dt) {
                     case "name":
@@ -173,7 +172,6 @@ public class ComparePokemonSteps extends Utility {
             }
             PokemonListData.putParentListData(pokemonDbPokemon, ParamConstant.pokemonDbData);
         }
-        VideoRecorder_utlity.stopRecord();
         softAssert.assertAll();
     }
 

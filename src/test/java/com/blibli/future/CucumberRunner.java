@@ -5,9 +5,11 @@ import com.blibli.future.data.PokemonData;
 import com.blibli.future.data.PokemonJsonData;
 import com.blibli.future.data.PokemonListData;
 import com.blibli.future.utils.Utility;
+import com.blibli.future.utils.VideoRecorder_utlity;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 
 import java.util.List;
 
@@ -21,8 +23,13 @@ import java.util.List;
 public class CucumberRunner extends AbstractTestNGCucumberTests{
     Utility utility = new Utility();
 
+    @BeforeClass
+    public void beforeClass() throws Exception {
+        VideoRecorder_utlity.startRecord("WebsiteTestRecording");
+    }
+
     @AfterClass
-    public void createJsonFile(){
+    public void afterClass() throws Exception {
         String[] sources = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData, ParamConstant.pokedexAppData};
         List<PokemonData> currData;
         for (String source : sources) {
@@ -54,6 +61,7 @@ public class CucumberRunner extends AbstractTestNGCucumberTests{
                 utility.writeJsonFile(source);
             }
             currData.clear();
+            VideoRecorder_utlity.stopRecord();
         }
     }
 }
