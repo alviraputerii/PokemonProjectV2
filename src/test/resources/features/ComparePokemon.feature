@@ -55,18 +55,18 @@ Feature: Feature - Compare Pokemon Data
     Examples:
       | pokemon |
       | pikachu |
-#      | charizard |
-#      | eevee     |
-#      | mewtwo    |
-#      | garurumon |
-#      | koffing   |
-#      | meowth    |
-#      | blastoise |
-#      | ivysaur   |
-#      | squirtle  |
-#      | mew       |
-#      | pidgey    |
-#      | rattata   |
+      | charizard |
+      | eevee     |
+      | mewtwo    |
+      | garurumon |
+      | koffing   |
+      | meowth    |
+      | blastoise |
+      | ivysaur   |
+      | squirtle  |
+      | mew       |
+      | pidgey    |
+      | rattata   |
 
   @Mobile
   Scenario Outline: Scenario - Get pokemon data from mobile pokemon app
@@ -79,35 +79,35 @@ Feature: Feature - Compare Pokemon Data
     Examples:
       | pokemon |
       | Pikachu |
-#      | Charizard |
-#      | Eevee     |
-#      | Mewtwo    |
-#      | Garurumon |
-#      | Koffing   |
-#      | Meowth    |
-#      | Blastoise |
-#      | Ivysaur   |
-#      | Squirtle  |
-#      | Mew       |
-#      | Pidgey    |
-#      | Rattata   |
+      | Charizard |
+      | Eevee     |
+      | Mewtwo    |
+      | Garurumon |
+      | Koffing   |
+      | Meowth    |
+      | Blastoise |
+      | Ivysaur   |
+      | Squirtle  |
+      | Mew       |
+      | Pidgey    |
+      | Rattata   |
 
   @Compare
   Scenario: Scenario - Compare pokemon data
     Given prepare pokemon parameter for following pokemon
       | pikachu |
-#      | charizard |
-#      | eevee     |
-#      | mewtwo    |
-#      | koffing   |
-#      | meowth    |
-#      | blastoise |
-#      | ivysaur   |
-#      | squirtle  |
-#      | mew       |
-#      | pidgey    |
-#      | rattata   |
-#      | garurumon |
+      | charizard |
+      | eevee     |
+      | mewtwo    |
+      | koffing   |
+      | meowth    |
+      | blastoise |
+      | ivysaur   |
+      | squirtle  |
+      | mew       |
+      | pidgey    |
+      | rattata   |
+      | garurumon |
     Then  compare all pokemon data
 
 
