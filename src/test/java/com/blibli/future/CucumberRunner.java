@@ -5,9 +5,11 @@ import com.blibli.future.data.PokemonData;
 import com.blibli.future.data.PokemonJsonData;
 import com.blibli.future.data.PokemonListData;
 import com.blibli.future.utils.Utility;
-import com.blibli.future.utils.VideoRecorder_utlity;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
+import net.serenitybdd.core.environment.EnvironmentSpecificConfiguration;
+import net.thucydides.core.util.EnvironmentVariables;
+import net.thucydides.core.util.SystemEnvironmentVariables;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -20,17 +22,14 @@ import java.util.List;
         glue = {"com.blibli.future.steps"},
         tags = "")
 
-public class CucumberRunner extends AbstractTestNGCucumberTests{
+public class CucumberRunner extends AbstractTestNGCucumberTests {
     Utility utility = new Utility();
-
-//    @Before
-//    public  void before(Scenario scenario) throws Exception {
-//        if (scenario.getSourceTagNames().equals("Website")) VideoRecorder_utlity.startRecord("WebsiteTestRecording");
-//    }
 
     @BeforeClass
     public void beforeClass() throws Exception {
-        VideoRecorder_utlity.startRecord("WebsiteTestRecording");
+        EnvironmentVariables variables = SystemEnvironmentVariables.createEnvironmentVariables();
+        String tag = EnvironmentSpecificConfiguration.from(variables).getProperty("webdriver.getTag");
+        utility.startRecord(tag);
     }
 
     @AfterClass
@@ -52,7 +51,7 @@ public class CucumberRunner extends AbstractTestNGCucumberTests{
                     currData = PokemonListData.getParentListData(ParamConstant.pokedexAppData);
                     break;
             }
-            if(currData.size()!=0) {
+            if (currData.size() != 0) {
                 for (PokemonData dt : currData) {
                     PokemonJsonData.putPokemonData(ParamConstant.name, dt.getName());
                     PokemonJsonData.putPokemonData(ParamConstant.number, dt.getNumber());
@@ -66,7 +65,9 @@ public class CucumberRunner extends AbstractTestNGCucumberTests{
                 utility.writeJsonFile(source);
             }
             currData.clear();
-            VideoRecorder_utlity.stopRecord();
+            EnvironmentVariables variables = SystemEnvironmentVariables.createEnvironmentVariables();
+            String tag = EnvironmentSpecificConfiguration.from(variables).getProperty("webdriver.getTag");
+            utility.stopRecord(tag);
         }
     }
 }

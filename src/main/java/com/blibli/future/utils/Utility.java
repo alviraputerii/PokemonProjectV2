@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
+import io.appium.java_client.screenrecording.CanRecordScreen;
 import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.webdriver.ThucydidesWebDriverSupport;
 import net.thucydides.core.webdriver.WebDriverFacade;
@@ -48,18 +49,12 @@ public class Utility extends PageObject {
         else throw new RuntimeException(web + "'s url not specified in the Configuration.properties file.");
     }
 
-    public String getPokemon() {
-        String pokemon = properties.getProperty("pokemon");
-        if (pokemon != null) return pokemon;
-        else throw new RuntimeException("Pokemon not specified in the Configuration.properties file.");
-    }
-
     public static void clickByWebElement(WebElement element, WebDriver webDriver) {
         JavascriptExecutor js = (JavascriptExecutor) webDriver;
         js.executeScript("arguments[0].click();", element);
     }
 
-    protected void clickByString(String xpath) {
+    public void clickByString(String xpath) {
         WebElement webElement = waitForCondition().until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
         try {
@@ -70,43 +65,52 @@ public class Utility extends PageObject {
         }
     }
 
-    protected String getTextByString(String string) {
+    public String getTextByString(String string) {
         WebElement webElement = waitForCondition().until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath(string)));
         return webElement.getText();
     }
 
-    protected List<WebElement> getALlWebElementByString(String xpath) {
+    public List<WebElement> getALlWebElementByString(String xpath) {
         return waitForCondition().until(
                 ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(xpath)));
     }
 
-    protected Boolean isElementVisibleByString(String xpath) {
+    public Boolean isElementVisibleByString(String xpath) {
         WebElement webElement = waitForCondition().until(
                 ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
         return webElement != null;
     }
 
-    protected void typeValueByString(String xpath, String value) {
+    public void typeValueByString(String xpath, String value) {
         WebElement webElement = waitForCondition().until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
         webElement.sendKeys(value);
         webElement.sendKeys(Keys.ENTER);
     }
 
-    protected void typeValueWithoutEnterByString(String xpath, String value) {
+    public void typeValueWithoutEnterByString(String xpath, String value) {
         WebElement webElement = waitForCondition().until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
         webElement.sendKeys(value);
     }
 
-    protected void sendKeyEnterWebsite(String xpath) {
-        WebElement webElement = waitForCondition().until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
-        webElement.sendKeys(Keys.ENTER);
+    public void switchTabs(){
+        ArrayList<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
+        getDriver().switchTo().window(tabs.get(0));
     }
 
-    protected void sendKeyEnterMobile() {
+    public void startRecord(String platform) throws Exception {
+        if(platform.equalsIgnoreCase("website")) VideoRecorder_utlity.startRecord("WebsiteRecording");
+        else if(platform.equalsIgnoreCase("mobile")) ((CanRecordScreen)getDriver()).startRecordingScreen();
+    }
+
+    public void stopRecord(String platform) throws Exception {
+        if(platform.equalsIgnoreCase("website")) VideoRecorder_utlity.stopRecord();
+        else if(platform.equalsIgnoreCase("mobile")) ((CanRecordScreen)getDriver()).stopRecordingScreen();
+    }
+
+    public void sendKeyEnterMobile() {
         getAndroidDriver().pressKey(new KeyEvent(AndroidKey.ENTER));
     }
 

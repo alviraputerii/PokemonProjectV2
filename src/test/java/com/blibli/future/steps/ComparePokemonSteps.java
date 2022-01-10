@@ -1,24 +1,26 @@
 package com.blibli.future.steps;
 
-import com.blibli.future.common.CommonAction;
 import com.blibli.future.constant.ParamConstant;
-import com.blibli.future.data.*;
+import com.blibli.future.data.PokemonData;
+import com.blibli.future.data.PokemonListData;
 import com.blibli.future.pages.*;
 import com.blibli.future.response.GetPokemonApiResponse;
 import com.blibli.future.service.PokeApiController;
 import com.blibli.future.utils.Utility;
-import com.blibli.future.utils.VideoRecorder_utlity;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.qameta.allure.Allure;
 import io.restassured.response.Response;
+import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.testng.asserts.SoftAssert;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +28,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ComparePokemonSteps extends Utility {
-
-    CommonAction commonAction;
     BulbapediaHomePage bulbapediaHomePage;
     BulbapediaPokemonPage bulbapediaPokemonPage;
     PokemonDbHomePage pokemonDbHomePage;
@@ -43,16 +43,14 @@ public class ComparePokemonSteps extends Utility {
 
     //---------------------------- Open URL
     @Given("open bulbapedia home page")
-    public void openBulbapediaHomePage(){
-        commonAction.switchTabs();
+    public void openBulbapediaHomePage() {
+        switchTabs();
         bulbapediaHomePage.openBulbapediaHomePage();
-//        commonAction.waitPageObjectLoad();
     }
 
     @Given("open pokemondb home page")
     public void openPokemondbHomePage() {
         pokemonDbHomePage.openPokemonDbHomePage();
-//        commonAction.waitPageObjectLoad();
     }
 
     //---------------------------- Search for Pokemon
@@ -65,7 +63,6 @@ public class ComparePokemonSteps extends Utility {
     public void atPokemondbHomePageSearchForPokemonPokemon(String pokemon) {
         try {
             pokemonDbHomePage.searchPokemon(pokemon);
-//            commonAction.waitPageObjectLoad();
             pokemonDbHomePage.clickPokemonPokedex();
             isPokemonDbDataExist = true;
         } catch (Exception e) {
@@ -104,7 +101,6 @@ public class ComparePokemonSteps extends Utility {
     public void atBulbapediaPokemonPageGetFollowingData(String pokemon, List<String> data) {
         bulbapediaPokemon = new PokemonData();
         try {
-//            commonAction.waitPageObjectLoad();
             for (String dt : data) {
                 switch (dt) {
                     case "name":
@@ -145,7 +141,6 @@ public class ComparePokemonSteps extends Utility {
         Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         if (isPokemonDbDataExist) {
             pokemonDbPokemon = new PokemonData();
-//            commonAction.waitPageObjectLoad();
             for (String dt : data) {
                 switch (dt) {
                     case "name":
@@ -211,7 +206,7 @@ public class ComparePokemonSteps extends Utility {
     }
 
     @Then("at pokedex app pokemon page get following data")
-    public void atPokedexAppPokemonPageGetFollowingData(List<String> data) {
+    public void atPokedexAppPokemonPageGetFollowingData(List<String> data) throws IOException {
         if (isPokedexDataExist) {
             pokedexPokemon = new PokemonData();
             for (String dt : data) {
@@ -230,6 +225,8 @@ public class ComparePokemonSteps extends Utility {
             Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
             getAndroidDriver().resetApp();
         }
+        byte[] byteArr = IOUtils.toByteArray(new FileInputStream("./target/automationrecordings/mobileRecording"));
+        Allure.addAttachment("video", "video/mp4", new ByteArrayInputStream(byteArr), "mp4");
         softAssert.assertAll();
     }
 
@@ -280,31 +277,31 @@ public class ComparePokemonSteps extends Utility {
                 boolean checkName = bulbapediaPokemon.getName().equalsIgnoreCase(pokemonDbPokemon.getName()) &&
                         bulbapediaPokemon.getName().equalsIgnoreCase(pokeapiPokemon.getName()) &&
                         bulbapediaPokemon.getName().equalsIgnoreCase(pokedexPokemon.getName());
-                softAssert.assertTrue(checkName, "Pokemon name doesn't match");
+                softAssert.assertTrue(checkName, "Pokemon name for pokemon " + pokemon + " doesn't match");
 
                 boolean checkNumber = bulbapediaPokemon.getNumber() == pokemonDbPokemon.getNumber() &&
                         bulbapediaPokemon.getNumber() == pokeapiPokemon.getNumber() &&
                         bulbapediaPokemon.getNumber() == pokedexPokemon.getNumber();
-                softAssert.assertTrue(checkNumber, "Pokemon number doesn't match");
+                softAssert.assertTrue(checkNumber, "Pokemon number for pokemon " + pokemon + " doesn't match");
 
                 boolean checkType = bulbapediaPokemon.getType().equals(pokemonDbPokemon.getType()) &&
                         bulbapediaPokemon.getType().equals(pokeapiPokemon.getType());
-                softAssert.assertTrue(checkType, "Pokemon type doesn't match");
+                softAssert.assertTrue(checkType, "Pokemon type for pokemon " + pokemon + " doesn't match");
 
                 boolean checkStats = bulbapediaPokemon.getBaseStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokemonDbPokemon.getBaseStats().get(e.getKey()))) &&
                         bulbapediaPokemon.getBaseStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokeapiPokemon.getBaseStats().get(e.getKey()))) &&
                         bulbapediaPokemon.getBaseStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokedexPokemon.getBaseStats().get(e.getKey())));
-                softAssert.assertTrue(checkStats, "Pokemon base stat doesn't match");
+                softAssert.assertTrue(checkStats, "Pokemon base stat for pokemon " + pokemon + " doesn't match");
 
                 boolean checkExperience = bulbapediaPokemon.getBaseExperience() == pokemonDbPokemon.getBaseExperience() &&
                         bulbapediaPokemon.getBaseExperience() == pokeapiPokemon.getBaseExperience();
-                softAssert.assertTrue(checkExperience, "Pokemon base experience doesn't match");
+                softAssert.assertTrue(checkExperience, "Pokemon base experience for pokemon " + pokemon + " doesn't match");
 
                 boolean checkSpecies = bulbapediaPokemon.getSpecies().equals(pokemonDbPokemon.getSpecies());
-                softAssert.assertTrue(checkSpecies, "Pokemon species doesn't match");
+                softAssert.assertTrue(checkSpecies, "Pokemon species for pokemon " + pokemon + " doesn't match");
 
                 boolean checkGrowthRate = bulbapediaPokemon.getGrowthRate().equals(pokemonDbPokemon.getGrowthRate());
-                softAssert.assertTrue(checkGrowthRate, "Pokemon growth rate doesn't match");
+                softAssert.assertTrue(checkGrowthRate, "Pokemon growth rate for pokemon " + pokemon + " doesn't match");
             } else {
                 softAssert.assertTrue(isBulbapediaDataExist, "Comparison failed because pokemon " + pokemon + " doesn't exist in Bulbapedia");
                 softAssert.assertTrue(isPokemonDbDataExist, "Comparison failed because pokemon " + pokemon + " doesn't exist in PokemonDb");
