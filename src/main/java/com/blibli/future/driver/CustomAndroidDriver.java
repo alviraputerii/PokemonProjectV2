@@ -1,5 +1,6 @@
 package com.blibli.future.driver;
 
+import io.appium.java_client.android.AndroidDriver;
 import net.thucydides.core.webdriver.DriverSource;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -23,7 +24,7 @@ public class CustomAndroidDriver implements DriverSource {
         dc.setCapability("app", apkPath);
 
         try {
-            return new RemoteWebDriver(new URL("http://127.0.0.1:4723/wd/hub"), dc);
+            return new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), dc);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
