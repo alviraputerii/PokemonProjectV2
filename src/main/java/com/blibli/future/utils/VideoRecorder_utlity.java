@@ -1,27 +1,29 @@
 package com.blibli.future.utils;
-import java.awt.AWTException;
-import java.awt.Dimension;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import org.monte.media.Format;
 import org.monte.media.FormatKeys.MediaType;
 import org.monte.media.Registry;
 import org.monte.media.math.Rational;
 import org.monte.screenrecorder.ScreenRecorder;
+import ws.schild.jave.*;
 
-import static org.monte.media.AudioFormatKeys.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
+import static org.monte.media.AudioFormatKeys.EncodingKey;
+
+import static org.monte.media.AudioFormatKeys.FrameRateKey;
+import static org.monte.media.AudioFormatKeys.KeyFrameIntervalKey;
+import static org.monte.media.AudioFormatKeys.MIME_AVI;
+import static org.monte.media.AudioFormatKeys.MediaTypeKey;
+import static org.monte.media.AudioFormatKeys.MimeTypeKey;
 import static org.monte.media.VideoFormatKeys.*;
 
-public class VideoRecorder_utlity extends ScreenRecorder
-{
+public class VideoRecorder_utlity extends ScreenRecorder {
     public static ScreenRecorder screenRecorder;
     public String name;
+
     public VideoRecorder_utlity(GraphicsConfiguration cfg, Rectangle captureArea, Format fileFormat,
                                 Format screenFormat, Format mouseFormat, Format audioFormat, File movieFolder, String name)
             throws IOException, AWTException {
@@ -36,9 +38,8 @@ public class VideoRecorder_utlity extends ScreenRecorder
         } else if (!movieFolder.isDirectory()) {
             throw new IOException("\"" + movieFolder + "\" is not a directory.");
         }
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
         return new File(movieFolder,
-                name + "-" + dateFormat.format(new Date()) + "." + Registry.getInstance().getExtension(fileFormat));
+                name + "." + Registry.getInstance().getExtension(fileFormat));
     }
 
     public static void startRecord(String methodName) throws Exception {
@@ -64,5 +65,30 @@ public class VideoRecorder_utlity extends ScreenRecorder
 
     public static void stopRecord() throws Exception {
         screenRecorder.stop();
+    }
+
+    public static void convertVideo(String platform, String pokemon) {
+        File source = new File("./target/automationrecordings/" + platform + "-" + pokemon + ".avi");
+        File target = new File("./target/automationrecordings/"+ platform + "-" + pokemon + ".mp4");
+        AudioAttributes audio = new AudioAttributes();
+        audio.setCodec("aac");
+        audio.setBitRate(128000);
+        audio.setChannels(2);
+        audio.setSamplingRate(44100);
+        VideoAttributes video = new VideoAttributes();
+        video.setCodec("h264");
+        video.setX264Profile(VideoAttributes.X264_PROFILE.HIGH444);
+        video.setBitRate(160000);
+        video.setFrameRate(15);
+        EncodingAttributes attrs = new EncodingAttributes();
+        attrs.setFormat("mp4");
+        attrs.setAudioAttributes(audio);
+        attrs.setVideoAttributes(video);
+        try {
+            Encoder encoder = new Encoder();
+            encoder.encode(new MultimediaObject(source), target, attrs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

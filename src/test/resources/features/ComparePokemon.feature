@@ -4,6 +4,7 @@ Feature: Feature - Compare Pokemon Data
   @Website
   Scenario Outline: Scenario - Get pokemon data from some pokemon website
     Given open bulbapedia home page
+    And   prepare start recording for pokemon '<pokemon>' in platform 'website'
     When  at bulbapedia home page search for '<pokemon>'
     Then  at bulbapedia pokemon page get following '<pokemon>' data
       | name           |
@@ -24,10 +25,11 @@ Feature: Feature - Compare Pokemon Data
       | baseExperience |
       | species        |
       | growthRate     |
+    Then stop and save recording for pokemon '<pokemon>' in platform 'website'
 
     Examples:
-      | pokemon |
-      | pikachu |
+      | pokemon   |
+      | pikachu   |
       | charizard |
       | eevee     |
       | mewtwo    |
@@ -53,8 +55,8 @@ Feature: Feature - Compare Pokemon Data
       | baseExperience |
 
     Examples:
-      | pokemon |
-      | pikachu |
+      | pokemon   |
+      | pikachu   |
       | charizard |
       | eevee     |
       | mewtwo    |
@@ -70,15 +72,17 @@ Feature: Feature - Compare Pokemon Data
 
   @Mobile
   Scenario Outline: Scenario - Get pokemon data from mobile pokemon app
+    Given prepare start recording for pokemon '<pokemon>' in platform 'mobile'
     When  at pokedex app home page search for '<pokemon>'
     Then  at pokedex app pokemon page get following data
       | name      |
       | number    |
       | baseStats |
+    And  stop and save recording for pokemon '<pokemon>' in platform 'mobile'
 
     Examples:
-      | pokemon |
-      | Pikachu |
+      | pokemon   |
+      | Pikachu   |
       | Charizard |
       | Eevee     |
       | Mewtwo    |
@@ -95,7 +99,7 @@ Feature: Feature - Compare Pokemon Data
   @Compare
   Scenario: Scenario - Compare pokemon data
     Given prepare pokemon parameter for following pokemon
-      | pikachu |
+      | pikachu   |
       | charizard |
       | eevee     |
       | mewtwo    |

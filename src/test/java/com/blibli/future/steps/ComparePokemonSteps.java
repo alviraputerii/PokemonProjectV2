@@ -7,6 +7,7 @@ import com.blibli.future.pages.*;
 import com.blibli.future.response.GetPokemonApiResponse;
 import com.blibli.future.service.PokeApiController;
 import com.blibli.future.utils.Utility;
+import com.blibli.future.utils.VideoRecorder_utlity;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -137,7 +138,7 @@ public class ComparePokemonSteps extends Utility {
     }
 
     @Then("at pokemondb pokemon page get following data")
-    public void atPokemondbPokemonPageGetFollowingData(List<String> data) throws Exception {
+    public void atPokemondbPokemonPageGetFollowingData(List<String> data) {
         Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         if (isPokemonDbDataExist) {
             pokemonDbPokemon = new PokemonData();
@@ -225,8 +226,6 @@ public class ComparePokemonSteps extends Utility {
             Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
             getAndroidDriver().resetApp();
         }
-        byte[] byteArr = IOUtils.toByteArray(new FileInputStream("./target/automationrecordings/mobileRecording"));
-        Allure.addAttachment("video", "video/mp4", new ByteArrayInputStream(byteArr), "mp4");
         softAssert.assertAll();
     }
 
@@ -310,5 +309,19 @@ public class ComparePokemonSteps extends Utility {
             }
         }
         softAssert.assertAll();
+    }
+
+    //---------------------------- Recording Steps
+    @Given("prepare start recording for pokemon {string} in platform {string}")
+    public void prepareStartRecording(String pokemon, String platform) throws Exception {
+        startRecord(platform, pokemon);
+    }
+
+    @Then("stop and save recording for pokemon {string} in platform {string}")
+    public void stopAndSaveRecording(String pokemon, String platform) throws Exception {
+        stopRecord(platform, pokemon);
+        if (platform.equalsIgnoreCase("website")) VideoRecorder_utlity.convertVideo(platform, pokemon);
+        byte[] byteArr = IOUtils.toByteArray(new FileInputStream("./target/automationrecordings/" + platform + "-" + pokemon + ".mp4"));
+        Allure.addAttachment("video", "video/mp4", new ByteArrayInputStream(byteArr), "mp4");
     }
 }

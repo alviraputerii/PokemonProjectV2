@@ -7,11 +7,7 @@ import com.blibli.future.data.PokemonListData;
 import com.blibli.future.utils.Utility;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
-import net.serenitybdd.core.environment.EnvironmentSpecificConfiguration;
-import net.thucydides.core.util.EnvironmentVariables;
-import net.thucydides.core.util.SystemEnvironmentVariables;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 
 import java.util.List;
 
@@ -25,15 +21,8 @@ import java.util.List;
 public class CucumberRunner extends AbstractTestNGCucumberTests {
     Utility utility = new Utility();
 
-    @BeforeClass
-    public void beforeClass() throws Exception {
-        EnvironmentVariables variables = SystemEnvironmentVariables.createEnvironmentVariables();
-        String tag = EnvironmentSpecificConfiguration.from(variables).getProperty("webdriver.getTag");
-        utility.startRecord(tag);
-    }
-
     @AfterClass
-    public void afterClass() throws Exception {
+    public void afterClass() {
         String[] sources = {ParamConstant.bulbapediaData, ParamConstant.pokemonDbData, ParamConstant.pokeApiData, ParamConstant.pokedexAppData};
         List<PokemonData> currData;
         for (String source : sources) {
@@ -65,9 +54,6 @@ public class CucumberRunner extends AbstractTestNGCucumberTests {
                 utility.writeJsonFile(source);
             }
             currData.clear();
-            EnvironmentVariables variables = SystemEnvironmentVariables.createEnvironmentVariables();
-            String tag = EnvironmentSpecificConfiguration.from(variables).getProperty("webdriver.getTag");
-            utility.stopRecord(tag);
         }
     }
 }
