@@ -72,13 +72,13 @@ Feature: Feature - Compare Pokemon Data
 
   @Mobile
   Scenario Outline: Scenario - Get pokemon data from mobile pokemon app
-    Given prepare start recording for pokemon '<pokemon>' in platform 'mobile'
+#    Given prepare start recording for pokemon '<pokemon>' in platform 'mobile'
     When  at pokedex app home page search for '<pokemon>'
     Then  at pokedex app pokemon page get following data
       | name      |
       | number    |
       | baseStats |
-    And  stop and save recording for pokemon '<pokemon>' in platform 'mobile'
+#    And  stop and save recording for pokemon '<pokemon>' in platform 'mobile'
 
     Examples:
       | pokemon   |
