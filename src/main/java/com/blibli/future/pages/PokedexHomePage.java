@@ -17,6 +17,6 @@ public class PokedexHomePage extends Utility {
         clickByString(searchInput);
         typeValueWithoutEnterByString(searchInput, keyword);
         sendKeyEnterMobile();
-        clickByString(String.format(searchResult, keyword));
+        clickByString(String.format(searchResult, convertFirstIndexUpperCase(keyword)));
     }
 }

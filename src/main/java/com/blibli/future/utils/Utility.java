@@ -12,14 +12,10 @@ import net.serenitybdd.core.pages.PageObject;
 import net.thucydides.core.webdriver.ThucydidesWebDriverSupport;
 import net.thucydides.core.webdriver.WebDriverFacade;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.net.util.Base64;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -98,25 +94,23 @@ public class Utility extends PageObject {
         webElement.sendKeys(value);
     }
 
+    public String convertFirstIndexUpperCase(String value) {
+        value = value.toLowerCase();
+        value = value.substring(0,1).toUpperCase()+value.substring(1);
+        return value;
+    }
+
     public void switchTabs() {
         ArrayList<String> tabs = new ArrayList<>(getDriver().getWindowHandles());
         getDriver().switchTo().window(tabs.get(0));
     }
 
-    public void startRecord(String platform, String fileName) throws Exception {
-        if (platform.equalsIgnoreCase("website")) VideoRecorder_utlity.startRecord(platform + "-" + fileName);
-        else if (platform.equalsIgnoreCase("mobile")) getAndroidDriver().startRecordingScreen();
+    public void startRecord(String fileName) throws Exception {
+       VideoRecorder_utlity.startRecord(fileName);
     }
 
-    public void stopRecord(String platform, String pokemon) throws Exception {
-        if (platform.equalsIgnoreCase("website")) VideoRecorder_utlity.stopRecord();
-        else if (platform.equalsIgnoreCase("mobile")) {
-            String base64String = getAndroidDriver().stopRecordingScreen();
-            byte[] data = Base64.decodeBase64(base64String);
-            String destinationPath = "./target/automationrecordings/" + platform + "-" + pokemon + ".mp4";
-            Path path = Paths.get(destinationPath);
-            Files.write(path, data);
-        }
+    public void stopRecord() throws Exception {
+       VideoRecorder_utlity.stopRecord();
     }
 
     public void sendKeyEnterMobile() {

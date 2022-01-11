@@ -67,9 +67,9 @@ public class VideoRecorder_utlity extends ScreenRecorder {
         screenRecorder.stop();
     }
 
-    public static void convertVideo(String platform, String pokemon) {
-        File source = new File("./target/automationrecordings/" + platform + "-" + pokemon + ".avi");
-        File target = new File("./target/automationrecordings/"+ platform + "-" + pokemon + ".mp4");
+    public static void convertVideo(String pokemon) {
+        File source = new File("./target/automationrecordings/" +pokemon + ".avi");
+        File target = new File("./target/automationrecordings/"+ pokemon + ".mp4");
         AudioAttributes audio = new AudioAttributes();
         audio.setCodec("aac");
         audio.setBitRate(128000);
@@ -78,8 +78,8 @@ public class VideoRecorder_utlity extends ScreenRecorder {
         VideoAttributes video = new VideoAttributes();
         video.setCodec("h264");
         video.setX264Profile(VideoAttributes.X264_PROFILE.HIGH444);
-        video.setBitRate(160000);
-        video.setFrameRate(15);
+        video.setBitRate(720000);
+        video.setFrameRate(30);
         EncodingAttributes attrs = new EncodingAttributes();
         attrs.setFormat("mp4");
         attrs.setAudioAttributes(audio);

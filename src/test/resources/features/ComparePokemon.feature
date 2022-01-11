@@ -4,7 +4,7 @@ Feature: Feature - Compare Pokemon Data
   @Website
   Scenario Outline: Scenario - Get pokemon data from some pokemon website
     Given open bulbapedia home page
-    And   prepare start recording for pokemon '<pokemon>' in platform 'website'
+    And   prepare start recording for pokemon '<pokemon>'
     When  at bulbapedia home page search for '<pokemon>'
     Then  at bulbapedia pokemon page get following '<pokemon>' data
       | name           |
@@ -25,23 +25,24 @@ Feature: Feature - Compare Pokemon Data
       | baseExperience |
       | species        |
       | growthRate     |
-    Then stop and save recording for pokemon '<pokemon>' in platform 'website'
+    Then stop and save recording for pokemon '<pokemon>'
 
     Examples:
       | pokemon   |
-      | pikachu   |
-      | charizard |
-      | eevee     |
-      | mewtwo    |
-      | garurumon |
-      | koffing   |
-      | meowth    |
-      | blastoise |
-      | ivysaur   |
-      | squirtle  |
-      | mew       |
-      | pidgey    |
-      | rattata   |
+      | piKacHU   |
+#      | charizard |
+#      | eevee     |
+#      | mewtwo    |
+#      | garurumon |
+#      | koffing   |
+#      | meowth    |
+#      | blastoise |
+#      | ivysaur   |
+#      | squirtle  |
+#      | mew       |
+#      | pidgey    |
+#      | rattata   |
+#      | solrock   |
 
   @Api
   Scenario Outline: Scenario - Get pokemon data from api
@@ -56,7 +57,7 @@ Feature: Feature - Compare Pokemon Data
 
     Examples:
       | pokemon   |
-      | pikachu   |
+      | piKacHU   |
       | charizard |
       | eevee     |
       | mewtwo    |
@@ -69,32 +70,32 @@ Feature: Feature - Compare Pokemon Data
       | mew       |
       | pidgey    |
       | rattata   |
+      | solrock   |
 
   @Mobile
   Scenario Outline: Scenario - Get pokemon data from mobile pokemon app
-#    Given prepare start recording for pokemon '<pokemon>' in platform 'mobile'
     When  at pokedex app home page search for '<pokemon>'
     Then  at pokedex app pokemon page get following data
       | name      |
       | number    |
       | baseStats |
-#    And  stop and save recording for pokemon '<pokemon>' in platform 'mobile'
 
     Examples:
       | pokemon   |
-      | Pikachu   |
-      | Charizard |
-      | Eevee     |
-      | Mewtwo    |
-      | Garurumon |
-      | Koffing   |
-      | Meowth    |
-      | Blastoise |
-      | Ivysaur   |
-      | Squirtle  |
-      | Mew       |
-      | Pidgey    |
-      | Rattata   |
+      | piKacHU   |
+      | charizard |
+      | eevee     |
+      | mewtwo    |
+      | garurumon |
+      | koffing   |
+      | meowth    |
+      | blastoise |
+      | ivysaur   |
+      | squirtle  |
+      | mew       |
+      | pidgey    |
+      | rattata   |
+      | solrock   |
 
   @Compare
   Scenario: Scenario - Compare pokemon data
@@ -103,6 +104,7 @@ Feature: Feature - Compare Pokemon Data
       | charizard |
       | eevee     |
       | mewtwo    |
+      | garurumon |
       | koffing   |
       | meowth    |
       | blastoise |
@@ -111,7 +113,7 @@ Feature: Feature - Compare Pokemon Data
       | mew       |
       | pidgey    |
       | rattata   |
-      | garurumon |
+      | solrock   |
     Then  compare all pokemon data
 
 

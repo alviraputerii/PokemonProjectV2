@@ -312,16 +312,16 @@ public class ComparePokemonSteps extends Utility {
     }
 
     //---------------------------- Recording Steps
-    @Given("prepare start recording for pokemon {string} in platform {string}")
-    public void prepareStartRecording(String pokemon, String platform) throws Exception {
-        startRecord(platform, pokemon);
+    @Given("prepare start recording for pokemon {string}")
+    public void prepareStartRecording(String pokemon) throws Exception {
+        startRecord(pokemon);
     }
 
-    @Then("stop and save recording for pokemon {string} in platform {string}")
-    public void stopAndSaveRecording(String pokemon, String platform) throws Exception {
-        stopRecord(platform, pokemon);
-        if (platform.equalsIgnoreCase("website")) VideoRecorder_utlity.convertVideo(platform, pokemon);
-        byte[] byteArr = IOUtils.toByteArray(new FileInputStream("./target/automationrecordings/" + platform + "-" + pokemon + ".mp4"));
+    @Then("stop and save recording for pokemon {string}")
+    public void stopAndSaveRecording(String pokemon) throws Exception {
+        stopRecord();
+        VideoRecorder_utlity.convertVideo(pokemon);
+        byte[] byteArr = IOUtils.toByteArray(new FileInputStream("./target/automationrecordings/" + pokemon + ".mp4"));
         Allure.addAttachment("video", "video/mp4", new ByteArrayInputStream(byteArr), "mp4");
     }
 }
