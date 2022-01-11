@@ -25,7 +25,7 @@ Feature: Feature - Get Pokemon Data from Mobile
       | rattata   |
       | solrock   |
 
-  @Mobile @Negative @Test
+  @Mobile @Negative
   Scenario Outline: Scenario - Get pokemon data from mobile pokemon app should be failed
     When  at pokedex app home page search for '<pokemon>' exist is 'false'
 

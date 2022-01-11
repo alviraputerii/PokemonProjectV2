@@ -35,9 +35,9 @@ public class BulbapediaPokemonPage extends Utility {
     public Map<String, Integer> getPokemonStats() {
         String pokemonStat = "";
         try{
-            if (isElementVisibleByString(pokemonBaseStat)) pokemonStat = pokemonBaseStat;
+            if (isElementVisibleByString(otherBaseStat)) pokemonStat = otherBaseStat;
         }catch (Exception e){
-            pokemonStat = otherBaseStat;
+            pokemonStat = pokemonBaseStat;
         }
         List<WebElement> stats = getALlWebElementByString(pokemonStat);
         Map<String, Integer> pokemonStats = new HashMap<>();
