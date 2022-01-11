@@ -30,19 +30,19 @@ Feature: Feature - Compare Pokemon Data
     Examples:
       | pokemon   |
       | piKacHU   |
-#      | charizard |
-#      | eevee     |
-#      | mewtwo    |
-#      | garurumon |
-#      | koffing   |
-#      | meowth    |
-#      | blastoise |
-#      | ivysaur   |
-#      | squirtle  |
-#      | mew       |
-#      | pidgey    |
-#      | rattata   |
-#      | solrock   |
+      | charizard |
+      | eevee     |
+      | mewtwo    |
+      | garurumon |
+      | koffing   |
+      | meowth    |
+      | blastoise |
+      | ivysaur   |
+      | squirtle  |
+      | mew       |
+      | pidgey    |
+      | rattata   |
+      | solrock   |
 
   @Api
   Scenario Outline: Scenario - Get pokemon data from api
