@@ -8,6 +8,7 @@ public class PokemonDbHomePage extends Utility {
     private final String privacyControlOk = "//*[@id='gdpr-confirm']//button";
     private final String searchInput = "//*[@id='sitesearch']";
     private final String pokemonResult = "//div[@class='gsc-webResult gsc-result'][1]//div[@class='gs-title']/a";
+    private final String noResultText = "//div[@class='gs-snippet']";
 
     public void openPokemonDbHomePage() {
         openAt(getWebsiteUrl("urlPokemonDb"));
@@ -33,5 +34,9 @@ public class PokemonDbHomePage extends Utility {
         }catch (Exception e){
             clickByString(pokemonResult);
         }
+    }
+
+    public String getSearchResultText() {
+        return getTextByString(noResultText);
     }
 }

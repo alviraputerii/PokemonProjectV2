@@ -21,7 +21,6 @@ import org.testng.asserts.SoftAssert;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,10 +66,8 @@ public class ComparePokemonSteps extends Utility {
             pokemonDbHomePage.clickPokemonPokedex();
             isPokemonDbDataExist = true;
         } catch (Exception e) {
-            isPokemonDbDataExist = false;
             e.printStackTrace();
         }
-        softAssert.assertTrue(isPokemonDbDataExist, "Pokemon " + pokemon + " doesn't exist in PokemonDb");
     }
 
     @When("send api request for {string}")
@@ -79,8 +76,8 @@ public class ComparePokemonSteps extends Utility {
         response = pokeApiController.getPokemon(getWebsiteUrl("urlPokeApi"), pokemon.toLowerCase());
     }
 
-    @When("at pokedex app home page search for {string}")
-    public void atAppHomePageSearchForPokemon(String pokemon) {
+    @When("at pokedex app home page search for {string} exist is {string}")
+    public void atAppHomePageSearchForPokemon(String pokemon,String value) {
         try {
             pokedexHomePage.searchPokemon(pokemon);
             isPokedexDataExist = true;
@@ -88,18 +85,18 @@ public class ComparePokemonSteps extends Utility {
             isPokedexDataExist = false;
             e.printStackTrace();
         }
-        softAssert.assertTrue(isPokedexDataExist, "Pokemon " + pokemon + " doesn't exist in Pokedex App");
+        softAssert.assertEquals(isPokedexDataExist, Boolean.parseBoolean(value),"Pokemon " + pokemon + " exist in Pokedex App is not " + value);
     }
 
     //---------------------------- Check Response Code
     @Then("api response code should be {int}")
     public void apiResponseCodeShouldBe(int code) {
-        softAssert.assertTrue(response.getStatusCode() == code, "Pokemon doesn't exist in PokeApi");
+        softAssert.assertTrue(response.getStatusCode() == code, "wrong response status code");
     }
 
     //---------------------------- Get Data
-    @Then("at bulbapedia pokemon page get following {string} data")
-    public void atBulbapediaPokemonPageGetFollowingData(String pokemon, List<String> data) {
+    @Then("at bulbapedia pokemon page get following data")
+    public void atBulbapediaPokemonPageGetFollowingData(List<String> data) {
         bulbapediaPokemon = new PokemonData();
         try {
             for (String dt : data) {
@@ -134,7 +131,6 @@ public class ComparePokemonSteps extends Utility {
         } finally {
             Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         }
-        softAssert.assertTrue(isBulbapediaDataExist, "Pokemon " + pokemon + " doesn't exist in Bulbapedia");
     }
 
     @Then("at pokemondb pokemon page get following data")
@@ -207,7 +203,7 @@ public class ComparePokemonSteps extends Utility {
     }
 
     @Then("at pokedex app pokemon page get following data")
-    public void atPokedexAppPokemonPageGetFollowingData(List<String> data) throws IOException {
+    public void atPokedexAppPokemonPageGetFollowingData(List<String> data){
         if (isPokedexDataExist) {
             pokedexPokemon = new PokemonData();
             for (String dt : data) {
@@ -227,6 +223,16 @@ public class ComparePokemonSteps extends Utility {
             getAndroidDriver().resetApp();
         }
         softAssert.assertAll();
+    }
+
+    @Then("at bulbapedia home page pokemon should not be found")
+    public void atBulbapediaHomePagePokemonShouldNotBeFound() {
+        softAssert.assertEquals(bulbapediaHomePage.getSearchResultText(),"There were no results matching the query.","Pokemon found");
+    }
+
+    @Then("at pokemondb home page pokemon should not be found")
+    public void atPokemondbHomePagePokemonShouldNotBeFound() {
+        softAssert.assertEquals(pokemonDbHomePage.getSearchResultText(),"No Results","Pokemon found");
     }
 
     //---------------------------- Compare Data
