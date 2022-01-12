@@ -85,6 +85,7 @@ public class ComparePokemonSteps extends Utility {
         } catch (Exception e) {
             isPokedexDataExist = false;
             e.printStackTrace();
+            Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         }
         softAssert.assertEquals(isPokedexDataExist, Boolean.parseBoolean(value),"Pokemon " + pokemon + " exist in Pokedex App is not " + value);
     }
