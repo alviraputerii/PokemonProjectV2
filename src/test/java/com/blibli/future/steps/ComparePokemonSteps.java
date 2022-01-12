@@ -66,6 +66,7 @@ public class ComparePokemonSteps extends Utility {
             pokemonDbHomePage.clickPokemonPokedex();
             isPokemonDbDataExist = true;
         } catch (Exception e) {
+            isPokemonDbDataExist = false;
             e.printStackTrace();
         }
     }
@@ -131,6 +132,7 @@ public class ComparePokemonSteps extends Utility {
         } finally {
             Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         }
+        softAssert.assertTrue(isBulbapediaDataExist, "Pokemon doesn't exist in Bulbapedia");
     }
 
     @Then("at pokemondb pokemon page get following data")
@@ -163,6 +165,8 @@ public class ComparePokemonSteps extends Utility {
                 }
             }
             PokemonListData.putParentListData(pokemonDbPokemon, ParamConstant.pokemonDbData);
+        }else{
+            softAssert.assertTrue(isPokemonDbDataExist, "Pokemon doesn't exist in PokemonDb");
         }
         softAssert.assertAll();
     }
@@ -228,11 +232,13 @@ public class ComparePokemonSteps extends Utility {
     @Then("at bulbapedia home page pokemon should not be found")
     public void atBulbapediaHomePagePokemonShouldNotBeFound() {
         softAssert.assertEquals(bulbapediaHomePage.getSearchResultText(),"There were no results matching the query.","Pokemon found");
+        Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
     }
 
     @Then("at pokemondb home page pokemon should not be found")
     public void atPokemondbHomePagePokemonShouldNotBeFound() {
         softAssert.assertEquals(pokemonDbHomePage.getSearchResultText(),"No Results","Pokemon found");
+        Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
     }
 
     //---------------------------- Compare Data
