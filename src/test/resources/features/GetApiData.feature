@@ -31,7 +31,7 @@ Feature: Feature - Get Pokemon Data from Api
   @Api @Negative
   Scenario Outline: Scenario - Get pokemon data from api should be failed
     When  send api request for '<pokemon>'
-    Then  api response code should be 400
+    Then  api response code should be 404
 
     Examples:
       | pokemon   |
