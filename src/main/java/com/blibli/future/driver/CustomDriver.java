@@ -42,9 +42,10 @@ public class CustomDriver implements DriverSource {
         if (driver.equalsIgnoreCase("chrome")) {
             DesiredCapabilities dr = DesiredCapabilities.chrome();
             dr.setBrowserName("chrome");
-            dr.setPlatform(Platform.WINDOWS);
+            dr.setPlatform(Platform.ANY);
             ChromeOptions opt = new ChromeOptions();
             opt.addExtensions(new File("extension.crx"));
+            opt.addArguments("--disable-dev-shm-usage");
             opt.merge(dr);
             try {
                 return new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), opt);
@@ -54,9 +55,10 @@ public class CustomDriver implements DriverSource {
         } else {
             DesiredCapabilities dr = DesiredCapabilities.firefox();
             dr.setBrowserName("firefox");
-            dr.setPlatform(Platform.WINDOWS);
+            dr.setPlatform(Platform.ANY);
             FirefoxOptions opt = new FirefoxOptions();
             opt.addArguments("--private");
+            opt.addArguments("--disable-dev-shm-usage");
             opt.merge(dr);
             try {
                 return new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), opt);
