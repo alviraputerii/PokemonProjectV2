@@ -1,13 +1,11 @@
 package com.blibli.future.steps;
 
 import com.blibli.future.constant.ParamConstant;
-import com.blibli.future.data.PokemonData;
-import com.blibli.future.data.PokemonListData;
+import com.blibli.future.data.*;
 import com.blibli.future.pages.*;
-import com.blibli.future.response.GetPokemonApiResponse;
+import com.blibli.future.response.*;
 import com.blibli.future.service.PokeApiController;
-import com.blibli.future.utils.Utility;
-import com.blibli.future.utils.VideoRecorder_utlity;
+import com.blibli.future.utils.*;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -333,7 +331,7 @@ public class ComparePokemonSteps extends Utility {
     @Then("stop and save recording for pokemon {string}")
     public void stopAndSaveRecording(String pokemon) throws Exception {
         stopRecord();
-        VideoRecorder_utlity.convertVideo(pokemon);
+        VideoRecorderUtility.convertVideo(pokemon);
         byte[] byteArr = IOUtils.toByteArray(new FileInputStream("./target/automationrecordings/" + pokemon + ".mp4"));
         Allure.addAttachment("video", "video/mp4", new ByteArrayInputStream(byteArr), "mp4");
     }

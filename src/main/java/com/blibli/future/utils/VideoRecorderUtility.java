@@ -20,11 +20,11 @@ import static org.monte.media.AudioFormatKeys.MediaTypeKey;
 import static org.monte.media.AudioFormatKeys.MimeTypeKey;
 import static org.monte.media.VideoFormatKeys.*;
 
-public class VideoRecorder_utlity extends ScreenRecorder {
+public class VideoRecorderUtility extends ScreenRecorder {
     public static ScreenRecorder screenRecorder;
     public String name;
 
-    public VideoRecorder_utlity(GraphicsConfiguration cfg, Rectangle captureArea, Format fileFormat,
+    public VideoRecorderUtility(GraphicsConfiguration cfg, Rectangle captureArea, Format fileFormat,
                                 Format screenFormat, Format mouseFormat, Format audioFormat, File movieFolder, String name)
             throws IOException, AWTException {
         super(cfg, captureArea, fileFormat, screenFormat, mouseFormat, audioFormat, movieFolder);
@@ -53,7 +53,7 @@ public class VideoRecorder_utlity extends ScreenRecorder {
         GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().
                 getDefaultScreenDevice()
                 .getDefaultConfiguration();
-        screenRecorder = new VideoRecorder_utlity(gc, captureSize,
+        screenRecorder = new VideoRecorderUtility(gc, captureSize,
                 new Format(MediaTypeKey, MediaType.FILE, MimeTypeKey, MIME_AVI),
                 new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
                         CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, DepthKey, 24, FrameRateKey,

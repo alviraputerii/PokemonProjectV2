@@ -106,11 +106,11 @@ public class Utility extends PageObject {
     }
 
     public void startRecord(String fileName) throws Exception {
-       VideoRecorder_utlity.startRecord(fileName);
+       VideoRecorderUtility.startRecord(fileName);
     }
 
     public void stopRecord() throws Exception {
-       VideoRecorder_utlity.stopRecord();
+       VideoRecorderUtility.stopRecord();
     }
 
     public void sendKeyEnterMobile() {
