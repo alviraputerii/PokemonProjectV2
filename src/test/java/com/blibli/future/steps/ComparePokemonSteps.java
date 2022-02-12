@@ -76,7 +76,7 @@ public class ComparePokemonSteps extends Utility {
     }
 
     @When("at pokedex app home page search for {string} exist is {string}")
-    public void atAppHomePageSearchForPokemon(String pokemon,String value) {
+    public void atAppHomePageSearchForPokemon(String pokemon, String value) {
         try {
             pokedexHomePage.searchPokemon(pokemon);
             isPokedexDataExist = true;
@@ -85,7 +85,7 @@ public class ComparePokemonSteps extends Utility {
             e.printStackTrace();
             Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
         }
-        softAssert.assertEquals(isPokedexDataExist, Boolean.parseBoolean(value),"Pokemon " + pokemon + " exist in Pokedex App is not " + value);
+        softAssert.assertEquals(isPokedexDataExist, Boolean.parseBoolean(value), "Pokemon " + pokemon + " exist in Pokedex App is not " + value);
     }
 
     //---------------------------- Check Response Code
@@ -113,14 +113,17 @@ public class ComparePokemonSteps extends Utility {
                     case "baseStats":
                         bulbapediaPokemon.setBaseStats(bulbapediaPokemonPage.getPokemonStats());
                         break;
-                    case "baseExperience":
-                        bulbapediaPokemon.setBaseExperience(bulbapediaPokemonPage.getPokemonBaseExperience());
-                        break;
                     case "species":
                         bulbapediaPokemon.setSpecies(bulbapediaPokemonPage.getPokemonSpecies());
                         break;
-                    default:
+                    case "growthRate":
                         bulbapediaPokemon.setGrowthRate(bulbapediaPokemonPage.getPokemonGrowthRate());
+                        break;
+                    case "height":
+                        bulbapediaPokemon.setHeight(bulbapediaPokemonPage.getPokemonHeight());
+                        break;
+                    default:
+                        bulbapediaPokemon.setWeight(bulbapediaPokemonPage.getPokemonWeight());
                 }
             }
             PokemonListData.putParentListData(bulbapediaPokemon, ParamConstant.bulbapediaData);
@@ -153,18 +156,21 @@ public class ComparePokemonSteps extends Utility {
                     case "baseStats":
                         pokemonDbPokemon.setBaseStats(pokemonDbPokemonPage.getPokemonStats());
                         break;
-                    case "baseExperience":
-                        pokemonDbPokemon.setBaseExperience(pokemonDbPokemonPage.getPokemonBaseExperience());
-                        break;
                     case "species":
                         pokemonDbPokemon.setSpecies(pokemonDbPokemonPage.getPokemonSpecies());
                         break;
-                    default:
+                    case "growthRate":
                         pokemonDbPokemon.setGrowthRate(pokemonDbPokemonPage.getPokemonGrowthRate());
+                        break;
+                    case "height":
+                        pokemonDbPokemon.setHeight(pokemonDbPokemonPage.getPokemonHeight());
+                        break;
+                    default:
+                        pokemonDbPokemon.setWeight(pokemonDbPokemonPage.getPokemonWeight());
                 }
             }
             PokemonListData.putParentListData(pokemonDbPokemon, ParamConstant.pokemonDbData);
-        }else{
+        } else {
             softAssert.assertTrue(isPokemonDbDataExist, "Pokemon doesn't exist in PokemonDb");
         }
         softAssert.assertAll();
@@ -194,8 +200,12 @@ public class ComparePokemonSteps extends Utility {
                             pokemonStats.put(ParamConstant.baseStatsName.get(i), pokeApiStats.get(i));
                         }
                         pokeapiPokemon.setBaseStats(pokemonStats);
+                        break;
+                    case "height":
+                        pokeapiPokemon.setHeight(getPokemonApiResponse.getHeight() / 10);
+                        break;
                     default:
-                        pokeapiPokemon.setBaseExperience(getPokemonApiResponse.getBase_experience().intValue());
+                        pokeapiPokemon.setWeight(getPokemonApiResponse.getWeight() / 10);
                 }
             }
             PokemonListData.putParentListData(pokeapiPokemon, ParamConstant.pokeApiData);
@@ -206,7 +216,7 @@ public class ComparePokemonSteps extends Utility {
     }
 
     @Then("at pokedex app pokemon page get following data")
-    public void atPokedexAppPokemonPageGetFollowingData(List<String> data){
+    public void atPokedexAppPokemonPageGetFollowingData(List<String> data) {
         if (isPokedexDataExist) {
             pokedexPokemon = new PokemonData();
             for (String dt : data) {
@@ -217,8 +227,14 @@ public class ComparePokemonSteps extends Utility {
                     case "number":
                         pokedexPokemon.setNumber(pokedexPokemonPage.getPokemonNumber());
                         break;
-                    default:
+                    case "baseStat":
                         pokedexPokemon.setBaseStats(pokedexPokemonPage.getPokemonStats());
+                        break;
+                    case "height":
+                        pokedexPokemon.setHeight(pokedexPokemonPage.getPokemonHeight());
+                        break;
+                    default:
+                        pokedexPokemon.setWeight(pokedexPokemonPage.getPokemonWeight());
                 }
             }
             PokemonListData.putParentListData(pokedexPokemon, ParamConstant.pokedexAppData);
@@ -230,13 +246,13 @@ public class ComparePokemonSteps extends Utility {
 
     @Then("at bulbapedia home page pokemon should not be found")
     public void atBulbapediaHomePagePokemonShouldNotBeFound() {
-        softAssert.assertEquals(bulbapediaHomePage.getSearchResultText(),"There were no results matching the query.","Pokemon found");
+        softAssert.assertEquals(bulbapediaHomePage.getSearchResultText(), "There were no results matching the query.", "Pokemon found");
         Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
     }
 
     @Then("at pokemondb home page pokemon should not be found")
     public void atPokemondbHomePagePokemonShouldNotBeFound() {
-        softAssert.assertEquals(pokemonDbHomePage.getSearchResultText(),"No Results","Pokemon found");
+        softAssert.assertEquals(pokemonDbHomePage.getSearchResultText(), "No Results", "Pokemon found");
         Allure.addAttachment("Page Screenshot", new ByteArrayInputStream(((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES)));
     }
 
@@ -303,15 +319,21 @@ public class ComparePokemonSteps extends Utility {
                         bulbapediaPokemon.getBaseStats().entrySet().stream().allMatch(e -> e.getValue().equals(pokedexPokemon.getBaseStats().get(e.getKey())));
                 softAssert.assertTrue(checkStats, "Pokemon base stat for pokemon " + pokemon + " doesn't match");
 
-                boolean checkExperience = bulbapediaPokemon.getBaseExperience() == pokemonDbPokemon.getBaseExperience() &&
-                        bulbapediaPokemon.getBaseExperience() == pokeapiPokemon.getBaseExperience();
-                softAssert.assertTrue(checkExperience, "Pokemon base experience for pokemon " + pokemon + " doesn't match");
-
                 boolean checkSpecies = bulbapediaPokemon.getSpecies().equals(pokemonDbPokemon.getSpecies());
                 softAssert.assertTrue(checkSpecies, "Pokemon species for pokemon " + pokemon + " doesn't match");
 
                 boolean checkGrowthRate = bulbapediaPokemon.getGrowthRate().equals(pokemonDbPokemon.getGrowthRate());
                 softAssert.assertTrue(checkGrowthRate, "Pokemon growth rate for pokemon " + pokemon + " doesn't match");
+
+                boolean checkHeight = bulbapediaPokemon.getHeight() == pokemonDbPokemon.getHeight() &&
+                        bulbapediaPokemon.getHeight() == pokeapiPokemon.getHeight() &&
+                        bulbapediaPokemon.getHeight() == pokedexPokemon.getHeight();
+                softAssert.assertTrue(checkHeight, "Pokemon height for pokemon " + pokemon + " doesn't match");
+
+                boolean checkWeight = bulbapediaPokemon.getWeight() == pokemonDbPokemon.getWeight() &&
+                        bulbapediaPokemon.getWeight() == pokeapiPokemon.getWeight() &&
+                        bulbapediaPokemon.getWeight() == pokedexPokemon.getWeight();
+                softAssert.assertTrue(checkWeight, "Pokemon weight for pokemon " + pokemon + " doesn't match");
             } else {
                 softAssert.assertTrue(isBulbapediaDataExist, "Comparison failed because pokemon " + pokemon + " doesn't exist in Bulbapedia");
                 softAssert.assertTrue(isPokemonDbDataExist, "Comparison failed because pokemon " + pokemon + " doesn't exist in PokemonDb");

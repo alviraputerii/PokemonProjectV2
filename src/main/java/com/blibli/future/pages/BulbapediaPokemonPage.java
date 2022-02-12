@@ -16,9 +16,10 @@ public class BulbapediaPokemonPage extends Utility {
     private final String pokemonType = "//a[contains(@title,'Type')]/ancestor::td//td[1]/table//a[contains(@title,'(type)')]//b[not(contains(text(),'Unknown'))]";
     private final String pokemonBaseStat = "//*[@id='Base_stats']/parent::h4/following-sibling::table[1]//div[2]";
     private final String otherBaseStat = "//span[contains(@id,'onward')]/parent::h5/following-sibling::table[1]//div[2]";
-    private final String pokemonBaseExperience = "//a[contains(@title,'Experience')]/parent::b/following-sibling::table//td[3]";
     private final String pokemonSpecies = "//a[contains(@title,'Pokémon category')]/span";
     private final String pokemonGrowthRate = "//span[contains(text(),'Leveling rate')]/ancestor::b/following-sibling::table//td";
+    private final String pokemonHeight = "//a[contains(@title,'List of Pokémon by height')]/parent::b/following-sibling::table//tr[1]/td[2]";
+    private final String pokemonWeight = "//a[contains(@title,'Weight')]/parent::b/following-sibling::table//tr[1]/td[2]";
 
     public String getPokemonName() {
         return getTextByString(pokemonName).split(" ")[0].toLowerCase();
@@ -46,10 +47,6 @@ public class BulbapediaPokemonPage extends Utility {
         }
         return pokemonStats;
     }
-    public Integer getPokemonBaseExperience() {
-        String experience = getTextByString(pokemonBaseExperience);
-        return Integer.valueOf(experience.substring(0,experience.length()-3));
-    }
 
     public String getPokemonSpecies() {
         return getTextByString(pokemonSpecies);
@@ -58,4 +55,13 @@ public class BulbapediaPokemonPage extends Utility {
     public String getPokemonGrowthRate() {
         return getTextByString(pokemonGrowthRate);
     }
+
+    public Double getPokemonHeight() {
+        return Double.valueOf(getTextByString(pokemonHeight).split(" ")[0]);
+    }
+
+    public Double getPokemonWeight() {
+        return Double.valueOf(getTextByString(pokemonWeight).split(" ")[0]);
+    }
+
 }

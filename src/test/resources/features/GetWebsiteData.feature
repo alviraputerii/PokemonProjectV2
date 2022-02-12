@@ -7,24 +7,26 @@ Feature: Feature - Get Pokemon Data from Website
     And   prepare start recording for pokemon '<pokemon>'
     When  at bulbapedia home page search for '<pokemon>'
     Then  at bulbapedia pokemon page get following data
-      | name           |
-      | number         |
-      | types          |
-      | baseStats      |
-      | baseExperience |
-      | species        |
-      | growthRate     |
+      | name       |
+      | number     |
+      | types      |
+      | baseStats  |
+      | species    |
+      | growthRate |
+      | height     |
+      | weight     |
 
     Given open pokemondb home page
     When  at pokemondb home page search for '<pokemon>'
     Then  at pokemondb pokemon page get following data
-      | name           |
-      | number         |
-      | types          |
-      | baseStats      |
-      | baseExperience |
-      | species        |
-      | growthRate     |
+      | name       |
+      | number     |
+      | types      |
+      | baseStats  |
+      | species    |
+      | growthRate |
+      | height     |
+      | weight     |
     Then stop and save recording for pokemon '<pokemon>'
 
     Examples:

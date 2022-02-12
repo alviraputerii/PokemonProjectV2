@@ -10,7 +10,8 @@ Feature: Feature - Get Pokemon Data from Api
       | number         |
       | types          |
       | baseStats      |
-      | baseExperience |
+      | height         |
+      | weight         |
 
     Examples:
       | pokemon   |

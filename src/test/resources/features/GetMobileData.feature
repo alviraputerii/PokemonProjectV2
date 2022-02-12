@@ -8,6 +8,8 @@ Feature: Feature - Get Pokemon Data from Mobile
       | name      |
       | number    |
       | baseStats |
+      | height    |
+      | weight    |
 
     Examples:
       | pokemon   |
