@@ -46,9 +46,9 @@ public class VideoRecorderUtility extends ScreenRecorder {
         File file = new File("./target/automationrecordings/");
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = screenSize.width;
-        int height = screenSize.height;
+        int height = 840;
 
-        Rectangle captureSize = new Rectangle(0, 0, width, height);
+        Rectangle captureSize = new Rectangle(0, 170, width, height);
 
         GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().
                 getDefaultScreenDevice()
