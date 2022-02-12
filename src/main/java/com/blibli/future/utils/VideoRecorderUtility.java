@@ -48,7 +48,7 @@ public class VideoRecorderUtility extends ScreenRecorder {
         int width = screenSize.width;
         int height = 840;
 
-        Rectangle captureSize = new Rectangle(0, 170, width, height);
+        Rectangle captureSize = new Rectangle(0, 160, width, height);
 
         GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().
                 getDefaultScreenDevice()
