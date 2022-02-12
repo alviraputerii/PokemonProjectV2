@@ -227,7 +227,7 @@ public class ComparePokemonSteps extends Utility {
                     case "number":
                         pokedexPokemon.setNumber(pokedexPokemonPage.getPokemonNumber());
                         break;
-                    case "baseStat":
+                    case "baseStats":
                         pokedexPokemon.setBaseStats(pokedexPokemonPage.getPokemonStats());
                         break;
                     case "height":
