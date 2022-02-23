@@ -13,9 +13,9 @@ Feature: Feature - Get Pokemon Data from Mobile
 
     Examples:
       | pokemon   |
-      | piKacHU   |
+      | pikachu   |
       | charizard |
-      | eevee     |
+      | EevEE     |
       | mewtwo    |
       | koffing   |
       | meowth    |

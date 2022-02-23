@@ -15,9 +15,9 @@ Feature: Feature - Get Pokemon Data from Api
 
     Examples:
       | pokemon   |
-      | piKacHU   |
+      | pikachu   |
       | charizard |
-      | eevee     |
+      | EevEE     |
       | mewtwo    |
       | koffing   |
       | meowth    |

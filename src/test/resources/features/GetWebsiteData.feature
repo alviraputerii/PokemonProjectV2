@@ -31,9 +31,9 @@ Feature: Feature - Get Pokemon Data from Website
 
     Examples:
       | pokemon   |
-      | piKacHU   |
+      | pikachu   |
       | charizard |
-      | eevee     |
+      | EevEE     |
       | mewtwo    |
       | koffing   |
       | meowth    |
